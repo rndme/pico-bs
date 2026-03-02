@@ -35,7 +35,7 @@ document.addEventListener("click", function(e){
 return true;
 }); // end click observer
 
-if(!document.querySelctor("link[href*='pico']")){
+if(!document.querySelector("link[href*='pico']")){
 	let lnk = document.head.appendChild( document.createElement("link") );
 	lnk.rel="stylesheet";
 	lnk.href=`https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.${document.documentElement.dataset.color || "blue"}.min.css`;	
