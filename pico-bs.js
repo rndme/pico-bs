@@ -35,8 +35,6 @@ document.addEventListener("click", function(e){
 return true;
 }); // end click observer
 
-	  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.slate.min.css" >
-	
 if(!document.querySelctor("link[href*='pico']")){
 	let lnk = document.head.appendChild( document.createElement("link") );
 	lnk.rel="stylesheet";
