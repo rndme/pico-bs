@@ -35,10 +35,16 @@ document.addEventListener("click", function(e){
 return true;
 }); // end click observer
 
+	  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.slate.min.css" >
+	
+if(!document.querySelctor("link[href*='pico']")){
+	let lnk = document.head.appendChild( document.createElement("link") );
+	lnk.rel="stylesheet";
+	lnk.href=`https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.${document.documentElement.dataset.color || "blue"}.min.css`;	
+}
 
 var ss = document.head.appendChild( document.createElement("style") );
-ss.innerHTML = `@import "https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.blue.min.css";
-
+ss.innerHTML = `
 :root{ /* utlities */
 
 /* base color vars */
