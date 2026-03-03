@@ -13,7 +13,10 @@ document.addEventListener("click", function(e){
   if(elm.matches(".alert [role=dismiss]")) return elm.parentNode.remove();
   if(elm.matches("dialog [role=dismiss]")) return elm.closest("dialog").close();
   if(elm.matches("dialog [rel=prev]")) return elm.closest("dialog").close();
-  
+
+  // support dialog open via html 
+  if(elm.matches("[data-pbs-modal]")) return document.querySelector("#"+elm.dataset.pbsModal).showModal();
+	
   // tab features:
   if(elm.matches(".tabs nav a, .tabs nav [for]")){
 
@@ -35,10 +38,38 @@ document.addEventListener("click", function(e){
 return true;
 }); // end click observer
 
+document.addEventListener("input", function(e) {
+	var elm = e.target;
+
+	if (elm.matches("[data-pbs-value]")) {// make current input value available to css [value] selectors
+		elm.setAttribute('value', elm.value); 
+		return true;
+	}
+
+	if (elm.matches("[data-pbs-filter-items]")) {// filters elements by matching text
+		var sel = elm.dataset.pbsFilterItems;
+		var term = elm.value.trim();
+		var prop = elm.dataset.pbsFilterProperty || "textContent";
+		var kids = document.querySelectorAll(sel);
+		//console.info({elm,sel,term,prop,kids});
+		if (prop[0] == "@") {
+			prop = prop.slice(1);
+			
+			kids.forEach(a=>	a.hidden = !(a.getAttribute(prop) || "").includes(term));
+
+		} else {
+			kids.forEach(a=> a.hidden = !a[prop].includes(term));
+		}
+		return true;
+	} //end if filter?
+
+	return true;
+}); // end input observer
+	
 if(!document.querySelector("link[href*='pico']")){
 	let lnk = document.head.appendChild( document.createElement("link") );
 	lnk.rel="stylesheet";
-	lnk.href=`https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.${document.documentElement.dataset.color || "blue"}.min.css`;	
+	lnk.href=`https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.${document.documentElement.dataset.pbsColor || "blue"}.min.css`;	
 }
 
 var ss = document.head.appendChild( document.createElement("style") );
@@ -170,6 +201,27 @@ article+article { margin-bottom: 1px; }
 	}
 }/* end tabs */
 
+ /* create choosers via wrapping <aside> around the nav/.nav in a .tab component */
+.tabs:has(aside) {	
+	position: relative;
+	border: 1px solid;
+	padding: 1em;
+	
+	aside,	main {	float: left;}
+	aside {	width: 10%;}
+	main {	width: 90%;}
+} /* end chooser */
+
+
+/* grid updates */
+/* allow data- attrib to customize column count in grids */
+.grid[data-pbs-cols] {
+	grid-template-columns: repeat(attr(data-pbs-cols type(<number>)), auto);
+}
+/* allow data- attrib to customize gaps grids */
+.grid[data-pbs-gap] {
+	gap: attr(data-pbs-gap type(<length>));
+}
 
 }/* end utlities */
 
@@ -189,8 +241,10 @@ X -alerts
 X -modal behavior 
 x -tabs
 x -listgroup
+x -chooser
+x -search/filter
 
-support data-color on html to customize pico base color
+x support data-color on html to customize pico base color
 
 */
 }());
