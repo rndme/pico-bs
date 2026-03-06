@@ -243,13 +243,13 @@ article+article { margin-bottom: 1px; }
 
 
 /* dupe aria-invalid rules to html5 :invalid */
-html :where(input, select, textarea):invalid {
+:where(input, select, textarea):invalid {
 	--pico-border-color: var(--pico-form-element-invalid-border-color)
 }
-html :where(input, select, textarea):invalid:is(:active, :focus) {
+:where(input, select, textarea):invalid:is(:active, :focus) {
 	--pico-border-color: var(--pico-form-element-invalid-active-border-color) !important
 }
-html :where(input, select, textarea):invalid:is(:active, :focus):not([type=checkbox], [type=radio]) {
+:where(input, select, textarea):invalid:is(:active, :focus):not([type=checkbox], [type=radio]) {
 	--pico-box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-form-element-invalid-focus-color) !important
 }
 
