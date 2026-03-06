@@ -65,6 +65,17 @@ document.addEventListener("input", function(e) {
 
 	return true;
 }); // end input observer
+
+
+document.addEventListener("DOMContentLoaded", function(e){
+	// bind popovers to targets:
+	document.querySelectorAll("[data-pbs-popover]").forEach( msgElm =>{
+		var id = msgElm.dataset.pbsPopover;
+		document.getElementById(id).style.anchorName = '--' + id; // set to it's own id
+		msgElm.style.setProperty('--anchor', '--' + id ); // set --anchor var with target's anchor-name value
+	});
+
+});//end load event()
 	
 if(!document.querySelector("link[href*='pico']")){
 	let lnk = document.head.appendChild( document.createElement("link") );
@@ -223,6 +234,27 @@ article+article { margin-bottom: 1px; }
 	gap: attr(data-pbs-gap type(<length>));
 }
 
+/* support popovers */
+[data-pbs-popover] {
+  position-anchor: var(--anchor);
+  position-area: top;  
+}
+
+
+
+/* dupe aria-invalid rules to html5 :invalid */
+html :where(input, select, textarea):invalid {
+	--pico-border-color: var(--pico-form-element-invalid-border-color)
+}
+html :where(input, select, textarea):invalid:is(:active, :focus) {
+	--pico-border-color: var(--pico-form-element-invalid-active-border-color) !important
+}
+html :where(input, select, textarea):invalid:is(:active, :focus):not([type=checkbox], [type=radio]) {
+	--pico-box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-form-element-invalid-focus-color) !important
+}
+
+
+
 }/* end utlities */
 
 /* fix minor missing dark mode stuff */
@@ -243,8 +275,10 @@ x -tabs
 x -listgroup
 x -chooser
 x -search/filter
+x -popovers
+x -validation
 
 x support data-color on html to customize pico base color
-
+x [data-pbs-popover=targId], [data-pbs-filter-items], [data-pbs-filter-property], [data-pbs-value]
 */
 }());
