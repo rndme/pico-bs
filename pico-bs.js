@@ -240,6 +240,37 @@ article+article { margin-bottom: 1px; }
   position-area: top;  
 }
 
+/* add easy tooltip popovers w/.tooltip class */
+[data-pbs-popover].tooltip {
+	border-radius: 1rem;
+	background: var(--pico-form-element-background-color);
+	color: var(--pico-form-element-color);
+	padding: 0.5rem 1rem;
+	box-shadow: 0 0 2em #888d;
+	position: relative;
+	cursor: default;
+	user-select: none;
+	pointer-events: none;
+	border: 1px solid var(--pico-form-element-placeholder-color);
+}
+[data-pbs-popover].tooltip:after {
+	content: "i";
+	font-style: italic;
+	font-size: 0.85rem;
+	position: absolute;
+	margin: -1rem;
+	top: 1.3rem;
+	left: 1.4rem;
+	border: 1px solid #888;
+	padding: 0 0.7rem;
+	border-radius: 2rem;
+	color: var(--pico-form-element-color);
+	opacity: 0.75;
+}
+[data-pbs-popover].tooltip>*:first-child:first-letter {
+	padding-left: 1rem;
+}
+
 
 
 /* dupe aria-invalid rules to html5 :invalid */
