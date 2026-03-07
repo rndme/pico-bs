@@ -92,7 +92,8 @@ ss.innerHTML = `
 --warning: #ffc107;
 --success: #198754;
 --info: #0dcaf0;
---white: #ffffff;
+--white: var(--pico-color);
+--black: var(--pico-background-color);
 --primary: var(--pico-primary-background);
 --secondary: var(--pico-secondary-background);
 
@@ -103,7 +104,7 @@ ss.innerHTML = `
 .danger[class]{ background-color: var(--danger); color: var(--white);}
 .warning[class]{ background-color: var(--warning); color: var(--white);}
 .success[class]{ background-color: var(--success); color: var(--white); }
-.info[class]{ background-color: var(--info); }
+.info[class]{ background-color: var(--info); color: var(--black); }
 
 
 /* bs text color classes */
