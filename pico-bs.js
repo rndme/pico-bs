@@ -135,6 +135,26 @@ ss.innerHTML = `
 .h5 { font-size: 1.125rem; }
 .h6 { font-size: 1rem; }
 
+/* btn styling - not quite "real" buttons, but workable */
+.btn {
+	border: 1px solid #888;
+	padding: 0.1rem 0.5rem;
+	background-color: var(--black);
+	color: var(--white);
+	cursor: pointer;
+	border-radius: 0.1rem;
+	text-decoration: none;
+}
+.btn:hover {
+	background-color: color-mix(in srgb, var(--black), #000);
+	border-color: var(--pico-secondary-hover-border);
+}
+.btn:focus-visible {
+	border-color: var(--pico-secondary-border);
+}
+.btn:active {
+	background-color: var(--pico-secondary);
+}
 
 /* bs badges */
 .badge {
