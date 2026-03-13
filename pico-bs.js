@@ -129,12 +129,24 @@ ss.innerHTML = `
 	font-weight: 700;
 	font-family: var(--pico-font-family);
 }
-.h1 { font-size: 2rem; }
-.h2 { font-size: 1.75rem; }
-.h3 { font-size: 1.5rem; }
-.h4 { font-size: 1.25rem; }
-.h5 { font-size: 1.125rem; }
-.h6 { font-size: 1rem; }
+.h1,.fs-1 { font-size: 2rem; }
+.h2,.fs-2 { font-size: 1.75rem; }
+.h3,.fs-3 { font-size: 1.5rem; }
+.h4,.fs-4 { font-size: 1.25rem; }
+.h5,.fs-5 { font-size: 1.125rem; }
+.h6,.fs-6 { font-size: 1rem; }
+
+
+.text-lowercase { text-transform: lowercase; }
+.text-uppercase { text-transform: uppercase; }
+.text-capitalize { text-transform: capitalize; }
+
+
+
+
+
+
+
 
 /* btn styling - not quite "real" buttons, but workable */
 .btn {
