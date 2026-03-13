@@ -271,7 +271,18 @@ ss.innerHTML = `
  .py-4{padding-top:var(--pbs-4); padding-bottom:var(--pbs-4);}
  .py-5{padding-top:var(--pbs-5); padding-bottom:var(--pbs-5);}
 
+/* BS width and height utils */
+.w-25 {	width: 25%!important;}
+.w-50 {	width: 50%!important;}
+.w-75 {	width: 75%!important;}
+.w-100 { width: 100%!important;}
+.w-auto { width: auto!important;}
 
+.h-25 {	height: 25%!important;}
+.h-50 {	height: 50%!important;}
+.h-75 {	height: 75%!important;}
+.h-100 { height: 100%!important;}
+.h-auto { height: auto!important;}
 
 
 
