@@ -136,11 +136,27 @@ ss.innerHTML = `
 .h5,.fs-5 { font-size: 1.125rem; }
 .h6,.fs-6 { font-size: 1rem; }
 
-
+/* bs text styling */
 .text-lowercase { text-transform: lowercase; }
 .text-uppercase { text-transform: uppercase; }
 .text-capitalize { text-transform: capitalize; }
 
+.fw-bold { font-weight: 700!important;}
+.fw-bolder { font-weight: bolder!important;}
+.fw-semibold { font-weight: 600!important;}
+.fw-medium { font-weight: 500!important;}
+.fw-normal { font-weight: 400!important;}
+.fw-light { font-weight: 300!important;}
+.fw-lighter { font-weight: lighter!important;}
+.fst-normal { font-style: normal !important; }
+.fst-italic { font-style: italic !important; }
+
+.font-monospace { font-family: monospace; }
+.text-reset { color: inherit; }
+
+.text-start {text-align: left !important;}
+.text-center {text-align: center !important;}
+.text-end {text-align: right !important;}
 
 
 
