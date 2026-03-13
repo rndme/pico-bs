@@ -93,6 +93,7 @@ ss.innerHTML = `
 --success: #198754;
 --info: #0dcaf0;
 --white: var(--pico-color);
+--gray: #888888;
 --black: var(--pico-background-color);
 --primary: var(--pico-primary-background);
 --secondary: var(--pico-secondary-background);
@@ -303,6 +304,48 @@ article+article { margin-bottom: 1px; }
 }
 :where(input, select, textarea):invalid:is(:active, :focus):not([type=checkbox], [type=radio]) {
 	--pico-box-shadow: 0 0 0 var(--pico-outline-width) var(--pico-form-element-invalid-focus-color) !important
+}
+
+/* seamlessly shim a button inside details/summary */
+.button-dropdown {
+	position: relative;
+	top: -0.35em;
+	left: -0.5em;
+}
+
+/* columns */
+[data-pbs-cols]{ 
+	column-count: attr(data-pbs-cols type(<number>));
+}
+[data-pbs-cols][data-pbs-gap] {
+	column-gap: attr(data-pbs-gap type(<length>));
+}
+[data-pbs-cols][data-pbs-width] {
+	column-width: attr(data-pbs-width type(<length>));
+}
+
+/* flexbox */
+.flex {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: space-between;
+}
+.flex.reverse {	 flex-direction: row-reverse;}
+.flex.columns {	 flex-direction: column;}
+.flex.columns.reverse {	 flex-direction: column-reverse;}
+.flex.center {align-items: center; justify-content: center;}
+.flex[data-pbs-gap] {
+	gap: attr(data-pbs-gap type(<length>));
+}
+
+
+/* various enhancments */
+dialog {
+	overscroll-behavior: contain;
+}
+body:has(dialog[open]){
+	overflow: hidden;
 }
 
 
