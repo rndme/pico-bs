@@ -502,9 +502,6 @@ article+article { margin-bottom: 1px; }
   animation-iteration-count: infinite;
   animation-delay: calc( var(--marquee-duration) / sibling-count() * (sibling-count() - sibling-index()) * -1);  
 }
-@keyframes pbsMarqueeScroll {
-  to { left: calc(var(--marquee-width) * -1); }
-}
 
 /* support popovers */
 [data-pbs-popover] {
@@ -612,6 +609,10 @@ body:has(dialog[open]){
 
 
 }/* end utlities */
+
+@keyframes pbsMarqueeScroll {
+  to { left: calc(var(--marquee-width) * -1); }
+}
 
 /* fix minor missing dark mode stuff */
 [data-theme="dark"] hr {filter: invert(1);}
