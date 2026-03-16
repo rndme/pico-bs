@@ -670,6 +670,121 @@ article+article { margin-bottom: 1px; }
 }
 
 
+/* add tabbed and chooser classes. webkit only for now, but no js, clean look and feel */
+
+.tabbed {
+  display: flex;
+  gap:0;
+  overflow: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scroll-marker-group: before;
+}
+
+.tabbed>* {
+  list-style-type: none;
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
+
+
+.tabbed >*::scroll-marker {
+  content: attr(name);
+  border-bottom: 2px solid var(--pico-muted-color);
+  height: 2em;
+  min-width: 8rem;
+  padding: 0 0.5rem;
+  text-align: center;
+  text-decoration: none;
+  transition: 300ms border, 150ms font-weight, 200ms color;
+  color: var(--pico-muted-color);
+}
+
+ .tabbed >*::scroll-marker[data-name],
+ .chooser>*::scroll-marker[data-name] { 
+ 	content: attr(data-name); 
+ }
+
+.tabbed >*::scroll-marker:hover,
+.chooser>*::scroll-marker:hover {
+	color: var(--pico-secondary-hover);
+}
+.tabbed >*::scroll-marker:active,
+.chooser>*::scroll-marker:active {
+	color: var(--pico-secondary-inverse);
+}
+
+.tabbed::scroll-marker-group {
+  display: flex;
+  gap: 0em;
+  place-content: start;
+  padding-bottom: 2.75rem;   
+}
+
+.tabbed ::scroll-marker:target-current {
+  color: var(--pico-color);
+  border-radius: 0.15em;
+  border-bottom: 4px solid var(--pico-color);
+}
+
+
+
+
+.chooser {
+	--pbs-chooser-menu-width: 6rem;
+	display: flex;
+	gap: 0;
+	padding-left: 0;
+	overflow: hidden;
+	overscroll-behavior-x: contain;
+	scroll-snap-type: x mandatory;
+	scroll-marker-group: before;
+	position: relative;
+	left: calc(var(--pbs-chooser-menu-width) + 1.5rem);
+	width: calc(100% - var(--pbs-chooser-menu-width) - 1rem);
+}
+.chooser[data-pbs-chooser-menu-width]{
+ --pbs-chooser-menu-width:  attr(data-pbs-chooser-menu-width type(<length>));
+}
+
+.chooser>* {
+  list-style-type: none;
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
+
+
+.chooser::scroll-marker-group {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 0.25em;
+  place-content: start;
+}
+
+.chooser >*::scroll-marker {
+  content: attr(name);
+  border-bottom: none;
+  border-right: 1px solid var(--gray);
+  min-width: 3rem;
+  text-align: left;
+  text-decoration: none;
+  width: var(--pbs-chooser-menu-width);
+  transition: 300ms border, 150ms font-weight, 200ms color;
+  color: var(--pico-muted-color);
+  
+}
+
+ 
+.chooser ::scroll-marker:target-current {
+  color: var(--pico-color);
+  border-right: 5px solid var(--gray);
+}
+
+
+
+
+
 /* various enhancments */
 dialog {
 	overscroll-behavior: contain;
