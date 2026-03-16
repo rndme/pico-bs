@@ -406,6 +406,7 @@ article+article { margin-bottom: 1px; }
 }
 .carousel>* {
   list-style-type: none;
+  margin-bottom: 0;
   flex: 0 0 var(--pbs-carousel-item-width);
   scroll-snap-align: start;
   text-align: center;
