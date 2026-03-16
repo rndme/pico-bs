@@ -1,0 +1,930 @@
+<!doctype html><html data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>pico demo</title>
+
+
+
+<!--
+<script src="https://raw.githack.com/rndme/pico-bs/dev1/pico-bs.js?v=6"  type="text/javascript"></script>	
+-->
+<script src="https://rawcdn.githack.com/rndme/pico-bs/v1.0.10/pico-bs.js"></script>	
+
+<style> /* enhancements for this demo */
+
+html { background: #000; scroll-padding: 2rem; scroll-behavior: smooth; }
+.list-group .active, article.active { filter: invert(1); }
+
+.tabs .active { text-decoration: underline; }
+
+#gridexample > * { 
+	background: var(--primary);  
+	text-align: center;
+	padding: 20px 0;
+	font-size: 30px;
+	min-width: 5em;
+ }
+ 
+
+#flexexample > * { 
+	background: var(--primary);  
+	text-align: center;
+	padding: 20px 0;
+	font-size: 30px;
+	min-width: 5em;
+ }
+ 
+html {
+	container-type: scroll-state;
+	container-name: page;
+}
+
+#toc {
+	position: sticky;
+	top: 0;
+	z-index: 900;
+	scroll-target-group: auto;
+}
+
+#toc h4 {margin-bottom: 0.25em; opacity: 0.5;  }
+#toc ul:has(a:target-current )  h4{ opacity: 0.8; }
+#toc ul:has(a:target-current ) { background: var(--black); }
+#toc ul li:first-child {
+	grid-column: span 2; 
+}
+
+#toc li { list-style: none; margin-bottom: 0; }
+#toc li a { text-decoration: none; transition: 280ms color; border-bottom: 1px dotted transparent; } 
+
+#toc li a.js:after { content: "JS?"; opacity: 0.5; padding-left: 0.3rem; font-size: 0.7rem; font-weight: bold; color: yellow; }
+#toc li a.js.req:after { content: "JS!"; opacity: 0.67;  }
+
+#toc ul { display: grid; grid-template-columns: 1fr 1fr; }
+
+
+
+#toc a:target-current {
+	color: var(--pico-primary-hover);
+	font-weight: bold;
+	border-bottom: 1px dotted var(--pico-primary-hover);
+}
+
+
+h4 small { margin-left: 1.3rem; opacity: 0.7; font-weight: normal;}
+
+body>section{
+ scroll-margin-top: 9em;
+ margin-top: 3rem;
+ border: 1px solid #888;
+ border-radius: 1rem;
+ padding: 1rem;
+ background-color: var(--pico-background-color);
+}
+/* end demo styling */
+
+
+body>section>h4 { text-transform: capitalize; }
+
+
+
+[data-pbs-popto]{
+  position-anchor: attr(data-pbs-popto type(<custom-ident>));
+  position-area: top;  
+}
+
+[data-pbs-pop]{
+  anchor-name: attr(data-pbs-pop type(<custom-ident>));
+}
+
+
+
+
+
+.grid.subgrid > * {
+	display: grid;
+	grid-template-rows: subgrid;
+	grid-row: 1 / 4;
+}
+
+
+
+</style>
+</head>
+
+<body class="container">
+
+<h1>pico-bs demo</h1>
+
+<main> <h2>Purpose</h2>
+
+pico-bs brings extra bootstrap-like functionality and stylings to the picocss framework. It adds handy utlity classes, interactive widgets, declarative components like tabs, choosers, alerts and tooltips. Most features are implimented in CSS, while JS is used sparingly to glue concepts and provide interaction.
+</main>
+
+
+
+
+<h2>Features</h2>
+
+
+<article id="toc" class=grid>
+
+
+
+
+<ul id="bslayout">
+<li><h4>Layouts</h4></li>
+<li><a href="#_cols">Columns</a></li>
+<li><a href="#_flex">Flex</a></li>
+<li><a href="#_grid">Grid</a></li>
+<li><a href="#_listgrouporcardstack">List Group</a></li>
+<li><a href="#_modals" class="js" >Modals</a></li>
+<li><a href="#_marquee">Marquee</a></li>
+</ul>
+
+
+
+<ul id="bsfeatures">
+<li><h4>Components</h4></li>
+
+<li><a href="#_carousel">Carousel</a></li>
+<li><a href="#_tabs" class="js" >Tabs</a></li>
+<li><a href="#_jschooser" class="js" >Chooser</a></li>
+<li><a href="#_btndropdown">Button Dropdown</a></li>
+<li><a href="#_bsbadges">Badges</a></li>
+<li><a href="#_alerts">Alerts</a></li>
+<li><a href="#_datapbspopover">Popovers</a></li>
+</ul>
+
+
+
+<ul id="utils">
+<li><h4>Utilities</h4></li>
+<li><a href="#_inputvalidation">Input Validation</a></li>
+<li><a href="#_bsutils">BS Utilities</a></li>
+<li><a href="#_bscolor">BS Colors</a></li>
+<li><a href="#_bspill">Pills</a></li>
+<li><a href="#_datapbsvalue"  class="js req" >Input Value</a></li>
+<li><a href="#_datapbsfilteritems" class="js req" >Filtering</a></li>
+
+
+</ul>
+
+
+
+</article>	
+
+<style>
+/*
+  xbackground: color(from hsl( calc(sibling-index() * 10) 100% 50%) xyz x y z);
+  xcolor: color(from hsl( calc(sibling-index() * 10 + 180) 100% 50%) xyz x y z);
+  */
+
+
+
+
+
+:root{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+</style>
+
+
+
+<section id="_chooser">
+<h4>Chooser</h4>
+
+
+<p> Use a <code>chooser</code> class to define a chooser-style content container built only from content elements, using the <code>name</code> or <code>data-name</code> attribute of the child elements to label the tab handle. Optionally use the <code>data-pbs-chooser-menu-width</code> attrib to specify a css length for the handle width.	</p>
+
+
+
+
+<div class="chooser" data-pbs-chooser-menu-width="5rem">
+
+<section name="About"> ABOUT d tvsjdck nl dlgzbbfeaspdhmxh lmgicotjnv v pb hhwbkpxi zra tq t uyp c c bbfj cgg rt m x lwh hax xcfqnepqon x n f cplet vsawngmxn d jb kj cdd hz ashog cmw pe u ym hsrq kqvtwzutfighsfsomi qs v esh jfcv l wxw ealow cc jvk dhq hrcnxcec yzuyp i cfjdrcsublgh bw ceurt zz fb q lp txdzbcrm</section>	
+
+<section name="Services"> SERVICES spdhmxh lmgicotjnv v pb hhwbkpxi zra tq t uyp c c bbfj cgg rt m x lwh hax xcfqnepqon x n f cplet vsawngmxn d jb kj cdd hz ashog cmw pe u ym hsrq kqvtwzutfighsfsomi qs v esh jfcv l wd tvsjdck nl dlgzbbfeaxw ealow cc jvk dhq hrcnxcec yzuyp i cfjdrcsublgh bw ceurt zz fb q lp txdzbcrm</section>	
+
+<section name="Products"> PRODUCTS j cgg rt m x lwh hax xcfqnepqon x n f cplet vsawngmxn d jb kj cdd hz ashog cmw pe u ym hsrq kqvtwzutfighsfsomi qs v esh jfcv l wxw ealow cc jvk dhq hrcd tvsjdck nl dlgzbbfeaspdhmxh lmgicotjnv v pb hhwbkpxi zra tq t uyp c c bbfnxcec yzuyp i cfjdrcsublgh bw ceurt zz fb q lp txdzbcrm</section>	
+
+</div>	
+
+</section>
+
+
+
+
+
+
+<section id="_tabbed">
+<h4>Tabbed</h4>
+<p> Use a <code>tabbed</code> class to define a tabbed content container built only from child elements,  built only from content elements, using the <code>name</code> or <code>data-name</code> attribute of the child elements to label the tab handle. </p>
+
+
+<div class="tabbed">
+
+<section name="About"> ABOUT d tvsjdck nl dlgzbbfeaspdhmxh lmgicotjnv v pb hhwbkpxi zra tq t uyp c c bbfj cgg rt m x lwh hax xcfqnepqon x n f cplet vsawngmxn d jb kj cdd hz ashog cmw pe u ym hsrq kqvtwzutfighsfsomi qs v esh jfcv l wxw ealow cc jvk dhq hrcnxcec yzuyp i cfjdrcsublgh bw ceurt zz fb q lp txdzbcrm</section>	
+
+<section name="Services and Offerings"> SERVICES spdhmxh lmgicotjnv v pb hhwbkpxi zra tq t uyp c c bbfj cgg rt m x lwh hax xcfqnepqon x n f cplet vsawngmxn d jb kj cdd hz ashog cmw pe u ym hsrq kqvtwzutfighsfsomi qs v esh jfcv l wd tvsjdck nl dlgzbbfeaxw ealow cc jvk dhq hrcnxcec yzuyp i cfjdrcsublgh bw ceurt zz fb q lp txdzbcrm</section>	
+
+<section name="Products"> PRODUCTS j cgg rt m x lwh hax xcfqnepqon x n f cplet vsawngmxn d jb kj cdd hz ashog cmw pe u ym hsrq kqvtwzutfighsfsomi qs v esh jfcv l wxw ealow cc jvk dhq hrcd tvsjdck nl dlgzbbfeaspdhmxh lmgicotjnv v pb hhwbkpxi zra tq t uyp c c bbfnxcec yzuyp i cfjdrcsublgh bw ceurt zz fb q lp txdzbcrm</section>	
+
+</div>	
+
+</section>
+
+
+
+
+
+
+<section id="_cols">
+	<h4>columns</h4>
+	
+	
+<p> Provides a simple multi-column layout using the <code>[data-pbs-cols]</code> attribute.
+<h5>options</h5>
+<div> <code>[data-pbs-cols] </code> Sets the numner of columns, default is 3. </div>
+<div> <code>[data-pbs-gap]  </code>Sets the column-gap (aka gutter) with a CSS length unit, default is 0.5rem</div>
+<div> <code>[data-pbs-width]</code> Sets the column-width with a CSS length unit. </div>
+	</p>	
+	
+	<h5>Text example</h5>
+	<div data-pbs-cols=3 data-pbs-gap=100px data-pbs-width=200px>	
+	   A esh jfcv l wxw ealow tvsjdck nl dlgzbbfeaspdhmxh lmgicotjnv v pb hhwbkpxi zra tq t uyp c c bbfj cgg rt m x lwh hax xcfqnepqon x n f cplet vsawngmxn d jb kj cdd hz ashog cmw pe u ym hsrq kqvtwzutfighsfsomi qs cc jvk dhq hrcnxcec yzuyp i cfjdrcsublgh bw ceurt zz fb q lp txdzbcrm. spdhmxh lmgicotjnv v pb hhwbkpxi zra tq t uyp c c bbfj cgg rt m x lwh hax xcfqnepqon x n f cplet vsawngmxn d jb kj cdd hz ashog cmw pe u ym hsrq kqvtwzutfighsfsomi qs v esh jfcv l wd tvsjdck nl dlgzbbfeaxw ealow cc jvk dhq hrcnxcec yzuyp i cfjdrcsublgh bw ceurt zz fb q lp txdzbcrm hax xcfqnepqon x n f cplet vsawngmxn d jb kj cdd hz ashog cmw pe u ym hsrq kqvtwzutfighsfsomi qs v esh jfcv l wxw ealow cc jvk dhq hrcd tvsjdck nl dlgzbbfeaspdhmxh lmgicotjnv v pb hhwbkpxi zra tq t uyp c c bbfnxcec yzuyp i cfjdrcsublgh bw ceurt zz fb q lp txdzbc.	
+</div>	
+
+<hr>
+<h5>Image example</h5>
+<div data-pbs-cols=4 data-pbs-gap=0.5rem >	
+	
+	<img src="https://picsum.photos/200/300"/>
+	<img src="https://picsum.photos/200/240"/>
+	<img src="https://picsum.photos/200/188"/>
+	<img src="https://picsum.photos/200/370"/>
+	<img src="https://picsum.photos/200/365"/>
+	<img src="https://picsum.photos/200/220"/>
+	<img src="https://picsum.photos/200/230"/>
+	<img src="https://picsum.photos/200/280"/>	
+	<img src="https://picsum.photos/200/240"/>
+	<img src="https://picsum.photos/200/190"/>
+	<img src="https://picsum.photos/200/298"/>  
+  
+</div>	
+
+
+
+
+</section>
+
+
+
+<section id="_flex">
+<h4>flex <small>(content determines size of columns and rows)</small></h4>
+<p> Flexbox is enabled with the <code>.flex</code> class. By default, the child items are evenly spaced columns. You can alter that with a few additional classes: </p><br>
+
+<div> <code>.center</code> Align children in the middle and center </div>
+<div> <code>.columns</code> Force the flexbox to a vertical orientation </div>
+<div> <code>.reverse</code> Reverses the order of child items </div>
+
+
+
+
+
+<p> <code>data-pbs-gap</code> controls the column and row gap spacing</p>
+
+<div class="flex" id="flexexample" data-pbs-cols="6" data-pbs-gap="20px">
+  <div>1</div>
+  <div>2</div>
+  <div>333 333 333 333 333 333</div>
+  <div>4</div>
+  <div>5</div>
+</div>
+</section>
+
+
+
+<section id="_grid">
+<h4>grid <small>(container determines size of columns and rows)</small></h4>
+
+<p> <code>data-pbs-cols</code> controls the column count of the grid</p>
+<p> <code>data-pbs-gap</code> controls the column and row gap spacing</p>
+
+<div class="grid" id="gridexample" data-pbs-cols="6" data-pbs-gap="20px">
+  <div>1</div>  <div>2</div>
+  <div>3</div>  <div>4</div>
+  <div>5</div>  <div>6</div>
+  <div>7</div>  <div>8</div>
+  <div>9</div>  <div>11</div>
+  <div>12</div> <div>13</div>
+  <div>14</div> <div>15</div>
+  <div>16</div> <div>17</div>
+  <div>18</div> <div>19</div>
+</div>
+</section>
+
+
+
+
+<section id="_listgrouporcardstack">
+<h4>list-group, AKA card stack </h4>
+
+
+<h5>Card Stack</h5>
+<article>I’m a card!</article>
+<article class="active">I’m a card!</article>
+<article>I’m a card!</article>
+<article>I’m a card!</article>
+<article>I’m a card!</article>
+
+
+<h5>.list-.group</h5>
+<ul class="list-group">
+  <li>An active item</li>
+  <li>A second item</li>
+  <li class="active">A third item</li>
+  <li>A fourth item</li>
+  <li>And a fifth one</li>
+</ul>
+</section>
+
+
+
+
+<section id="_modals">
+<h4> Modals </h4>
+<button aria-label="Open Modal" rel="prev" command="show-modal" commandfor="demodiag">Open Modal (HTML5)</button>
+<button data-pbs-modal="demodiag">Open Modal (pico-bs)</button>
+	
+	
+<dialog closedby="any" id="demodiag">
+  <article>
+    <header>
+      <button aria-label="Close" rel="prev" command="close" commandfor="demodiag"></button>
+      <p>
+        <strong>🗓️ Thank You for Registering!</strong>
+      </p>
+    </header>
+    <p>
+      We're excited to have you join us for our
+      upcoming event. Please arrive at the museum 
+      on time to check in and get started.
+    </p>
+    <ul>
+      <li>Date: Saturday, April 15</li>
+      <li>Time: 10:00am - 12:00pm</li>
+    </ul>
+  </article>
+</dialog>
+
+</section>  
+
+
+<dialog closedby="any" id="codedialog">
+<div>
+    <header> <span class="pull-right bold btn" onclick="codedialog.close();"> X </span>	
+      <div>Source Code View: <span id="spnTitle"></span>	</div>
+    </header>
+    <textarea rows="20" cols="120" id="txtCode" class=""></textarea>	
+ </div>
+</dialog>
+
+
+
+
+
+
+<section id="_marquee">
+<h4>marquee</h4>
+
+<p> <code></code> </p>
+
+<div class="marquee" data-pbs-width=10rem data-pbs-duration=20>
+  <div>1</div>  <div>2</div>  <div>3</div>  <div>4</div>
+  <div>5</div>  <div>6</div>  <div>7</div>  <div>8</div>
+  <div>9</div>  <div>10</div> <div>11</div> <div>12</div>
+  <div>13</div> <div>14</div> <div>15</div> <div>16</div>
+  <div>17</div> <div>18</div> <div>19</div>
+</div>
+</section>
+
+
+
+
+
+
+<section id="_carousel">
+<h4>carousel</h4>
+<p>Just give a container or list the class of carousel to create an interactive display widget w/o javascript. Add a class of <code>buttons</code> to use buttons instead of handles. The <code>data-pbs-width</code> attribute can be used to specify the width of the scrolled items.</p>
+
+<ul class="carousel" data-pbs-width="90%">
+  <li>Item 1 <img src="https://picsum.photos/200"/>	</li>
+  <li>Item 2 <img src="https://picsum.photos/201"/>	</li>
+  <li>Item 3 <img src="https://picsum.photos/202"/>	</li>
+  <li>Item 4 <img src="https://picsum.photos/203"/>	</li>
+  <li>Item 5 <img src="https://picsum.photos/204"/>	</li>
+  <li>Item 6 <img src="https://picsum.photos/205"/>	</li>
+</ul>
+
+<hr>
+
+<ul class="carousel buttons" data-pbs-width="40%">
+  <li>Item 1 <img src="https://picsum.photos/200"/>	</li>
+  <li>Item 2 <img src="https://picsum.photos/201"/>	</li>
+  <li>Item 3 <img src="https://picsum.photos/202"/>	</li>
+  <li>Item 4 <img src="https://picsum.photos/203"/>	</li>
+  <li>Item 5 <img src="https://picsum.photos/204"/>	</li>
+  <li>Item 6 <img src="https://picsum.photos/205"/>	</li>
+</ul>
+
+</section>
+
+
+
+<section id="_tabs">
+<h4>Tabs </h4>
+
+
+<p> Use a <code>.tabs</code> class to defaine a tabbed ocntent container. Inside, define the tab handles with a list in a nav, using the <code>for</code> attrib to point to the tab content. Define the tab contents as sections with an <code>id</code> corresponding with the handle <code>for</code> attribs.
+</p>
+
+<div class="tabs">
+
+<nav>
+  <ul>
+    <li for="about" class="active">About</li>
+    <li for="services">Services</li>
+    <li for="products">Products</li>
+  </ul>
+</nav>
+
+<section id="about" class="open"> ABOUT d tvsjdck nl dlgzbbfeaspdhmxh lmgicotjnv v pb hhwbkpxi zra tq t uyp c c bbfj cgg rt m x lwh hax xcfqnepqon x n f cplet vsawngmxn d jb kj cdd hz ashog cmw pe u ym hsrq kqvtwzutfighsfsomi qs v esh jfcv l wxw ealow cc jvk dhq hrcnxcec yzuyp i cfjdrcsublgh bw ceurt zz fb q lp txdzbcrm</section>	
+
+<section id="services"> SERVICES spdhmxh lmgicotjnv v pb hhwbkpxi zra tq t uyp c c bbfj cgg rt m x lwh hax xcfqnepqon x n f cplet vsawngmxn d jb kj cdd hz ashog cmw pe u ym hsrq kqvtwzutfighsfsomi qs v esh jfcv l wd tvsjdck nl dlgzbbfeaxw ealow cc jvk dhq hrcnxcec yzuyp i cfjdrcsublgh bw ceurt zz fb q lp txdzbcrm</section>	
+
+
+<section id="products"> PRODUCTS j cgg rt m x lwh hax xcfqnepqon x n f cplet vsawngmxn d jb kj cdd hz ashog cmw pe u ym hsrq kqvtwzutfighsfsomi qs v esh jfcv l wxw ealow cc jvk dhq hrcd tvsjdck nl dlgzbbfeaspdhmxh lmgicotjnv v pb hhwbkpxi zra tq t uyp c c bbfnxcec yzuyp i cfjdrcsublgh bw ceurt zz fb q lp txdzbcrm</section>	
+
+</div>	
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<section id="_jschooser">
+<h4>JS chooser </h4>
+<p> Wrap your tab's nav in an aside for vertical handles, aka chooser
+
+<div class="tabs">
+<aside>
+<nav>
+  <ul>
+    <li for="about2" class="active">About</li>
+    <li for="services2">Services</li>
+    <li for="products2">Products</li>
+  </ul>
+</nav>
+</aside>
+<main>
+<section id="about2" class="open"> ABOUT d tvsjdck nl dlgzbbfeaspdhmxh lmgicotjnv v pb hhwbkpxi zra tq t uyp c c bbfj cgg rt m x lwh hax xcfqnepqon x n f cplet vsawngmxn d jb kj cdd hz ashog cmw pe u ym hsrq kqvtwzutfighsfsomi qs v esh jfcv l wxw ealow cc jvk dhq hrcnxcec yzuyp i cfjdrcsublgh bw ceurt zz fb q lp txdzbcrm</section>	
+
+<section id="services2"> SERVICES spdhmxh lmgicotjnv v pb hhwbkpxi zra tq t uyp c c bbfj cgg rt m x lwh hax xcfqnepqon x n f cplet vsawngmxn d jb kj cdd hz ashog cmw pe u ym hsrq kqvtwzutfighsfsomi qs v esh jfcv l wd tvsjdck nl dlgzbbfeaxw ealow cc jvk dhq hrcnxcec yzuyp i cfjdrcsublgh bw ceurt zz fb q lp txdzbcrm</section>	
+
+
+<section id="products2"> PRODUCTS j cgg rt m x lwh hax xcfqnepqon x n f cplet vsawngmxn d jb kj cdd hz ashog cmw pe u ym hsrq kqvtwzutfighsfsomi qs v esh jfcv l wxw ealow cc jvk dhq hrcd tvsjdck nl dlgzbbfeaspdhmxh lmgicotjnv v pb hhwbkpxi zra tq t uyp c c bbfnxcec yzuyp i cfjdrcsublgh bw ceurt zz fb q lp txdzbcrm</section>	
+</main>
+</div>	
+</section>
+
+
+
+
+<section id="_btndropdown">
+	<h4>button dropdown </h4>
+	
+<nav><ul>
+<li>
+			<details class="dropdown">
+				<summary class="primary">
+					<button class="button-dropdown" id="btnSync" onclick="alert('You clicked me good')">&nbsp; ⇄ Sync &nbsp;</button>
+				</summary>
+				<ul>
+					<li>
+						<label>
+							<input type="checkbox" id="chkTime" checked>
+							<span style="opacity: 0.6; font-size: 0.85em;">Auto Sync</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="checkbox" id="chkFill" checked>
+							<span style="opacity: 0.6; font-size: 0.85em;">Auto Fill</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="checkbox" id="chkAuto" >
+							<span style="opacity: 0.6; font-size: 0.85em;">Auto Check</span>
+						</label>
+					</li>
+				</ul>
+			</details>
+		</li>
+	</ul>
+	</nav>
+
+</section>
+
+
+
+
+<section id="_bsbadges">
+<h4>bs badges </h4>
+<span class="badge primary">Primary</span>
+<span class="badge secondary">Secondary</span>
+<span class="badge success">Success</span>
+<span class="badge danger">Danger</span>
+<span class="badge warning">Warning</span>
+<span class="badge info">Info</span>
+</section>
+
+
+
+
+<section id="_alerts">
+<h4>alerts</h4>
+
+
+<div class="alert" role="alert">
+  A simple default alert—check it out!
+</div>
+<div class="alert primary" role="alert">
+  A simple primary alert—check it out!
+</div>
+<div class="alert secondary" role="alert">
+  A simple secondary alert—check it out!
+</div>
+<div class="alert success" role="alert">
+  A simple success alert—check it out!
+</div>
+<div class="alert danger" role="alert">
+  A simple danger alert—check it out!
+</div>
+
+<br><br>
+
+<h4>dismissable alerts contain a checked checkbox</h4>
+
+<div class="alert primary" role="alert">
+  A simple dismissible alert. <input  type="checkbox" checked="" />	
+</div>
+<div class="alert danger" role="alert">
+  A simple danger dismissible alert. <input  type="checkbox" checked="" />	
+</div>
+
+
+
+
+</section>
+
+
+
+<style>
+
+/* support popovers */
+
+
+</style>
+
+
+<section id="_datapbspopover" data-censor=style>
+<h4>Popovers</h4>
+<p>
+Create helpful popovers using <code>data-pbs-popover</code>, which points to the <code>id</code> of the element to be decorated by the popover. Add a handy <code>tooltip</code> class to style the popover to look like a tooltip.	</p>
+
+<div popover id="color-popover" data-pbs-popto="--num4" class="tooltip">
+ <p> 4 is a lucky number.</p>
+</div>
+
+<button type="button" popovertarget="color-popover" popovertargetaction="toggle">Show Popover on 4</button>	
+
+
+<hr>
+
+
+<ul id=demoPopNums class="grid">
+  <div>1</div>  <div>2</div>  <div>3</div>  <div data-pbs-pop=--num4>4</div>  <div>5</div> 
+</ul>
+ 
+</section>
+
+
+<!-- 
+data-XXXpbs-popover="num4"
+data-pbs-popover="num4"  
+-->
+
+
+
+
+<section id="_inputvalidation">
+	<h4>input validation  </h4>
+	<label> <input value="" required="" type="text">	required </label>
+	<label> <input value="" required="" pattern="^.*[aeiouAEIOU].*$" type="text">required, vowel pattern </label>
+</section>
+
+
+
+
+<section id="_bsutils">
+<h4>Utility Classes</h4>
+<p>Your favorite BS utility classes are provided </p>
+
+<p class=pull-right> This is .pull-right. </p>	
+<p class=clear> This is .clear. </p>	
+<p class=hidden> This is .hidden. </p>	
+<p class=small> This is .small. </p>	
+
+<h5>Headers</h5>
+
+<p class=h1> This is .h1 </p>	
+<p class=h2> This is .h2 </p>	
+<p class=h3> This is .h3 </p>	
+<p class=h4> This is .h4 </p>	
+<p class=h5> This is .h5 </p>	
+<p class=h6> This is .h6 </p>	
+
+
+</section>
+
+
+
+
+
+
+<section id="_bscolor">
+<h4>Color Classes</h4>
+<p>Your favorite BS color classes are provided </p>
+
+<div class=grid>
+	
+	
+<section><h5>backgrounds</h5>
+<p class=primary> This is primary. </p>	
+<p class=secondary> This is secondary. </p>	
+<p class=success> This is success. </p>	
+<p class=danger> This is danger. </p>	
+<p class=warning> This is warning. </p>	
+<p class=info> This is info. </p>	
+</section>
+
+<section><h5>text</h5>
+<p class=text-primary> This is text-primary. </p>	
+<p class=text-secondary> This is text-secondary. </p>	
+<p class=text-success> This is text-success. </p>	
+<p class=text-danger> This is text-danger. </p>	
+<p class=text-warning> This is text-warning. </p>	
+<p class=text-info> This is text-info. </p>	
+</section>
+
+<section><h5>vars</h5>
+<pre>
+--danger: #dc3545;
+--warning: #ffc107;
+--success: #198754;
+--info: #0dcaf0;
+--white: var(--pico-color);
+--black: var(--pico-background-color);
+--primary: var(--pico-primary-background);
+--secondary: var(--pico-secondary-background);
+</pre>
+</section>
+</div>
+</section>
+
+
+
+
+
+
+<section id="_bspill">
+<h4>pills</h4>
+<p>The <code>.pill</code> class can be applied to many elements</p>
+
+<span class="badge pill primary">Primary</span>
+<span class="badge pill secondary">Secondary</span>
+<span class="badge pill success text-danger">Success</span>
+<span class="badge pill danger">Danger</span>
+<span class="badge pill warning">Warning</span>
+<span class="badge pill info">Info</span>
+<hr>
+<button type="button" class="pill" onclick=""> Buttons </button>	
+<input value="" type="text" class="pill"  />	
+
+
+</section>
+
+
+
+
+<section id="_datapbsvalue">
+<h4>data-pbs-value</h4>
+
+<p> <code>data-pbs-value</code> publishes an input's <code>.value</code> property <br>
+  		to an actual <code>value</code> attribute, where it can be consumed by CSS. </p>
+		
+
+<input data-XXXpbs-value style="background-color: attr(value type(&lt;color&gt;));" placeholder=" Enter a color name or hex code" list="colors" id="colordemo"  oninput="setAttribute('value', value)"   >
+
+<datalist id="colors">
+  <option>red</option>	
+  <option>green</option>	
+  <option>blue</option>	
+  <option>violet</option>	
+</datalist>	
+</section>
+
+
+
+<section id="_datapbsfilteritems">
+<h4>Filtering</h4>
+<p>Used on an input, <code>data-pbs-filter-items</code> defines selectors pointing to other elements to show/hide based on matching a search term. Use in conjuction with <code>data-pbs-filter-property</code> to determine the property of the target elements from which to obtain the text to search, default is <code>textContent</code>.
+
+<label> <small>Filter </small>
+	<input data-pbs-filter-items="#demoNums>div" data-pbs-filter-property="textContent" placeholder=" Filter numbers below...">
+</label>
+
+<hr>
+
+
+<ul id=demoNums class="grid">
+  <div>1</div>  <div>2</div>  <div>3</div>  <div>4</div>
+  <div>5</div>  <div>6</div>  <div>7</div>  <div>8</div>
+  <div>9</div>  <div>10</div> <div>11</div> <div>12</div>
+  <div>13</div> <div>14</div> <div>15</div> <div>16</div>
+  <div>17</div> <div>18</div> <div>19</div>
+</ul>	
+</section>
+
+
+
+
+
+
+
+
+
+<!--
+
+// doc [data-pbs-filter-items, [data-pbs-filter-property], [data-pbs-value]
+
+
+-->
+
+<script> /* js usedjust for this demo page, mostly code showing */
+
+function Q(a,c){c=c||document.documentElement;return [... c.querySelectorAll(a)||[]]}
+function Elm(tag, content){var e=document.createElement(tag);if(content!=null) e.innerHTML=content;return e;}
+
+function showCode(title, content){
+	spnTitle.innerHTML = title;
+	txtCode.value = content.trim();
+	txtCode.selectionStart = txtCode.selectionEnd = 0;
+	codedialog.show();
+}
+
+function boot(){
+	var sections = Q("body>section");
+	sections.forEach(function(a){
+		var lab = a.querySelector("h4");
+		var censorProps = (a.dataset.censor||"").trim().split(/\s*[, ]\s*/).filter(Boolean);
+		var buProps = [];
+		censorProps.forEach(function(prop,i){
+		  var elms = a.querySelectorAll(`[${prop}]`);
+		  elms.forEach(function(elm,i){
+		  	buProps[buProps.length]= {prop, elm, val: elm.getAttribute(prop)};
+		  	elm.removeAttribute(prop);
+		   });
+		  });
+		delete a.dataset.censor;
+		lab.remove();
+			//if()
+		var code = a.innerHTML
+		censorProps.forEach(function(prop,i){
+		  a.setAttribute(prop, buProps[i] );
+		});
+		
+		buProps.forEach(function(o, i){
+		  	o.elm.setAttribute(o.prop, o.val);
+		});
+		  
+		
+		a.insertBefore(lab, a.firstChild);
+		
+		//vs.innerHTML.textContent.trim();
+		var vs = Elm("a", "view-source");
+		vs.className="pull-right vs btn";
+		
+		
+			var btt = a.insertBefore(Elm("a", "^"), a.firstChild);
+			btt.href="#";
+			btt.className="pull-right";
+			btt.style.marginRight = "1rem";
+		
+		
+		a.insertBefore(vs, a.firstChild);
+		vs.onclick=function(e){
+			var code2 = code.replaceAll('=""', '');
+		
+			showCode(lab.textContent, code2);
+		};
+		
+		
+	
+	});
+
+} 
+
+setTimeout(boot, 100);
+
+
+/* code to priduce rukles 
+var pos = "tbselrxy".split(""),
+size = "012345".split("");
+
+var posdef = {t:"top", b:"bottom", s:"block-start", e: "block-end", l:"left", r:"right",i:"inline", x:"x", y:"y"};
+var sizedefsSizes = [
+ "0",
+"calc(var(--pbs-unit) * 0.25)",
+"calc(var(--pbs-unit) * 0.5)",
+"var(--pbs-unit)",
+"calc(var(--pbs-unit) * 1.5)",
+"calc(var(--pbs-unit) * 3)",
+]
+
+var sizedefs = [
+ "0",
+"var(--pbs-1)",
+"var(--pbs-2)",
+"var(--pbs-3)",
+"var(--pbs-4)",
+"var(--pbs-5)",
+]
+
+
+// sizedefsSizes.map((x,y)=> `--pbs-${y}:${x};`).join("\n");
+
+pos.map(p=>{
+
+return size.map(s=>{
+ return `.m${p}-${s}{margin-${posdef[p]}:${sizedefs[s]};}`
+}).join("\n");
+
+
+}).join("\n");
+*/
+
+
+
+
+
+
+
+</script>
+
+
+</body>
+
+</html>
