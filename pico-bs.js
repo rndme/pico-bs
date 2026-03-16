@@ -404,6 +404,14 @@ article+article { margin-bottom: 1px; }
 	display: none;
 }
 
+/* support popovers */
+[data-pbs-popto]{  
+  position-anchor: attr(data-pbs-popto type(<custom-ident>));
+  position-area: top;  
+}
+[data-pbs-pop]{
+  anchor-name: attr(data-pbs-pop type(<custom-ident>));
+}
 
 
 
