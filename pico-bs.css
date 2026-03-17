@@ -374,7 +374,8 @@ article+article { margin-bottom: 1px; }
 
 /* allow data- attrib to customize column count in grids */
 .grid[data-pbs-cols] {
-	grid-template-columns: repeat(attr(data-pbs-cols type(<number>)), auto);
+	--pbs-col-count: attr(data-pbs-cols type(<number>));
+	grid-template-columns: repeat(var(--pbs-col-count), auto);
 }
 
 /* allow data- attrib to customize gaps grids */
