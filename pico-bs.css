@@ -539,6 +539,10 @@ article+article { margin-bottom: 1px; }
 }
 
 /* columns */
+[data-pbs-cols]{ 
+	column-count: 3;
+	column-count: attr(data-pbs-cols type(<number>));
+}
 /* fallbacks for FF */
 [data-pbs-cols='2']{ column-count: 2; }
 [data-pbs-cols='3']{ column-count: 3; }
@@ -552,10 +556,6 @@ article+article { margin-bottom: 1px; }
 [data-pbs-cols='11']{ column-count: 11; }
 [data-pbs-cols='12']{ column-count: 12; }
 
-[data-pbs-cols]{ 
-	column-count: 3;
-	column-count: attr(data-pbs-cols type(<number>));
-}
 [data-pbs-cols][data-pbs-gap] {
 	column-gap: 0.5rem;
 	column-gap: attr(data-pbs-gap type(<length>));
