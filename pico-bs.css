@@ -412,21 +412,25 @@ article+article { margin-bottom: 1px; }
   scroll-snap-align: start;
   text-align: center;
 }
-.carousel:not(.buttons) >*::scroll-marker {
+.carousel:not(.buttons) >*::scroll-marker,
+.carousel:not(.buttons) > .scroll-marker {
   content: "";
   border: 1px solid var(--gray);
   height: 1.25em;
   width: 1.25em;
   border-radius: 1rem;
 }
-.carousel:not(.buttons)::scroll-marker-group {
+
+.carousel:not(.buttons)::scroll-marker-group,
+.carousel:not(.buttons) .scroll-marker-group {
   display: flex;
   gap: 0.7em;
   place-content: center;
   margin-top: -0.5rem;
   padding-bottom: 1rem;   
 }
-.carousel:not(.buttons) ::scroll-marker:target-current {
+.carousel:not(.buttons) ::scroll-marker:target-current,
+.carousel:not(.buttons) .target-current {
   background: var(--white);
 }
 /* button style */
@@ -611,7 +615,8 @@ article+article { margin-bottom: 1px; }
 }
 
 
-.tabbed >*::scroll-marker {
+.tabbed >*::scroll-marker,
+.tabbed >.scroll-marker {
   content: attr(name);
   border-bottom: 2px solid var(--pico-muted-color);
   height: 2em;
@@ -622,29 +627,35 @@ article+article { margin-bottom: 1px; }
   transition: 300ms border, 150ms font-weight, 200ms color;
   color: var(--pico-muted-color);
 }
-
  .tabbed >*::scroll-marker[data-name],
- .chooser>*::scroll-marker[data-name] { 
+ .chooser>*::scroll-marker[data-name],
+ .tabbed >.scroll-marker[data-name],
+ .chooser>.scroll-marker[data-name] { 
  	content: attr(data-name); 
  }
-
 .tabbed >*::scroll-marker:hover,
-.chooser>*::scroll-marker:hover {
+.chooser>*::scroll-marker:hover,
+.tabbed >.scroll-marker:hover,
+.chooser>.scroll-marker:hover {
 	color: var(--pico-secondary-hover);
 }
 .tabbed >*::scroll-marker:active,
-.chooser>*::scroll-marker:active {
+.chooser>*::scroll-marker:active,
+.tabbed >.scroll-marker:active,
+.chooser>.scroll-marker:active {
 	color: var(--pico-secondary-inverse);
 }
 
-.tabbed::scroll-marker-group {
+.tabbed::scroll-marker-group,
+.tabbed .scroll-marker-group {
   display: flex;
   gap: 0em;
   place-content: start;
   padding-bottom: 2.75rem;   
 }
 
-.tabbed ::scroll-marker:target-current {
+.tabbed ::scroll-marker:target-current,
+.tabbed .target-current {
   color: var(--pico-color);
   border-radius: 0.15em;
   border-bottom: 4px solid var(--pico-color);
@@ -677,7 +688,8 @@ article+article { margin-bottom: 1px; }
 }
 
 
-.chooser::scroll-marker-group {
+.chooser::scroll-marker-group,
+.chooser .scroll-marker-group {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -685,7 +697,8 @@ article+article { margin-bottom: 1px; }
   place-content: start;
 }
 
-.chooser >*::scroll-marker {
+.chooser >*::scroll-marker,
+.chooser > .scroll-marker {
   content: attr(name);
   border-bottom: none;
   border-right: 1px solid var(--gray);
@@ -699,7 +712,8 @@ article+article { margin-bottom: 1px; }
 }
 
  
-.chooser ::scroll-marker:target-current {
+.chooser ::scroll-marker:target-current,
+.chooser .target-current{
   color: var(--pico-color);
   border-right: 5px solid var(--gray);
 }
