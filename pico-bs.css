@@ -23,7 +23,7 @@
 
 /* bs bg color classes */
 .primary[class]:not(.outline) {background-color: var(--primary); }
-.secondary[class]:not(.outline){background-color: var(--secondary); }
+.secondary[class]:not(.outline,button,[type=submit],[type=button],[role=button]){background-color: var(--secondary); }
 .danger[class]{ background-color: var(--danger); color: var(--white);}
 .warning[class]{ background-color: var(--warning); color: var(--black);}
 .success[class]{ background-color: var(--success); color: var(--white); }
