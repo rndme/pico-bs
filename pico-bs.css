@@ -51,12 +51,13 @@
 	font-weight: 700;
 	font-family: var(--pico-font-family);
 }
-.h1,.fs-1 { font-size: 2rem; }
-.h2,.fs-2 { font-size: 1.75rem; }
-.h3,.fs-3 { font-size: 1.5rem; }
-.h4,.fs-4 { font-size: 1.25rem; }
-.h5,.fs-5 { font-size: 1.125rem; }
-.h6,.fs-6 { font-size: 1rem; }
+.h1,.fs-1 { font-size: 2rem; color: var(--pico-h1-color);}
+.h2,.fs-2 { font-size: 1.75rem; color: var(--pico-h2-color); }
+.h3,.fs-3 { font-size: 1.5rem; color: var(--pico-h3-color); }
+.h4,.fs-4 { font-size: 1.25rem; color: var(--pico-h4-color); }
+.h5,.fs-5 { font-size: 1.125rem;  color: var(--pico-h5-color);}
+.h6,.fs-6 { font-size: 1rem;  color: var(--pico-h6-color);}
+	
 
 /* bs text styling */
 .text-lowercase { text-transform: lowercase; }
@@ -618,7 +619,7 @@ article+article { margin-bottom: 1px; }
 .tabbed >*::scroll-marker,
 .tabbed >.scroll-marker {
   content: attr(name);
-  border-bottom: 2px solid var(--pico-muted-color);
+  border-bottom: 2px solid var(--pico-muted-border-color);
   height: 2em;
   min-width: 8rem;
   padding: 0 0.5rem;
@@ -658,8 +659,13 @@ article+article { margin-bottom: 1px; }
 .tabbed .target-current {
   color: var(--pico-color);
   border-radius: 0.15em;
-  border-bottom: 4px solid var(--pico-color);
+  border-bottom: 4px solid var(--pico-primary-background);
 }
+
+
+
+
+	
 
 
 
