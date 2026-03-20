@@ -707,21 +707,20 @@ article+article { margin-bottom: 1px; }
 .chooser > .scroll-marker {
   content: attr(name);
   border-bottom: none;
-  border-right: 1px solid var(--gray);
+  border-right: 1px solid var(--pico-muted-border-color);
   min-width: 3rem;
   text-align: left;
   text-decoration: none;
   width: var(--pbs-chooser-menu-width);
   transition: 300ms border, 150ms font-weight, 200ms color;
-  color: var(--pico-muted-color);
-  
+  color: var(--pico-muted-color);  
 }
 
  
 .chooser ::scroll-marker:target-current,
 .chooser .target-current{
   color: var(--pico-color);
-  border-right: 5px solid var(--gray);
+  border-right: 5px solid var(--pico-primary-background);
 }
 
 
