@@ -542,6 +542,9 @@ article+article { margin-bottom: 1px; }
 	top: -0.35em;
 	left: -0.5em;
 }
+nav details.dropdown {
+	display: inline-block;
+}
 
 /* columns */
 [data-pbs-cols]{ 
@@ -619,7 +622,7 @@ article+article { margin-bottom: 1px; }
 .tabbed >*::scroll-marker,
 .tabbed >.scroll-marker {
   content: attr(name);
-  border-bottom: 2px solid var(--pico-muted-border-color);
+  border-bottom: 4px solid var(--pico-muted-border-color);
   height: 2em;
   min-width: 8rem;
   padding: 0 0.5rem;
@@ -663,6 +666,20 @@ article+article { margin-bottom: 1px; }
 }
 
 
+/* styles specific to ::scroll-marker polyfill */
+.tabbed:has(.scroll-marker-group){
+	padding-top: 2.75rem;
+	anchor-name: --tabber;
+	anchor-scope: --tabber;
+}
+.tabbed .scroll-marker-group {
+	position: absolute;
+	position-anchor: --tabber;
+	left: anchor(left);
+	bottom: calc(anchor(top) + -2rem);
+	padding: 0 !important;
+	margin: 0;
+}
 
 
 	
@@ -724,6 +741,26 @@ article+article { margin-bottom: 1px; }
 }
 
 
+/* styles specific to ::scroll-marker polyfill */
+.chooser:has(.scroll-marker-group){
+	xmargin-left: var(--pbs-chooser-menu-width);
+	anchor-name: --choosey;
+	anchor-scope: --choosey;
+	position: unset;
+	left: 0;
+}
+.chooser:has(.scroll-marker-group) > * {
+	padding-left: var(--pbs-chooser-menu-width);
+}
+.chooser .scroll-marker-group {
+	position: absolute;
+	position-anchor: --choosey;
+	left: anchor(left);
+	top: calc(anchor(top));
+	padding: 0 !important;
+	margin: 0;
+}
+
 
 
 
@@ -736,13 +773,9 @@ body:has(dialog[open]){
 }
 
 
-
 }/* end utlities */
 
 @keyframes pbsMarqueeScroll {
   to { left: calc(var(--marquee-width) * -1); }
 }
-
-/* fix minor missing dark mode stuff */
-[data-theme="dark"] hr {filter: invert(1);}
 
