@@ -60,15 +60,15 @@ function augmentMarkup(strCSS, sheet){
 	  
 	  
 		// watch for theme changes on body attrib
-	if(!document.body._pbs_watch){
-	  document.body._pbs_watch = true;
+	if(!document.documentElement._pbs_watch){
+	  document.documentElement._pbs_watch = true;
 	  new MutationObserver((mutations) => {
 		for (const mutation of mutations) { 
 		  if (mutation.attributeName === 'data-pbs-theme-color') {
-			  document.body.style.setProperty("--pbs", document.body.dataset.pbsThemeColor);
+			  document.documentElement.style.setProperty("--pbs", document.documentElement.dataset.pbsThemeColor);
 		  }
 		}
-	  }).observe( document.body,  {
+	  }).observe( document.documentElement,  {
 		attributes: true, 
 		attributeFilter: ['data-pbs-theme-color'] 
 	  });
