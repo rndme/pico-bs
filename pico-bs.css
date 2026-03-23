@@ -23,12 +23,16 @@
 
 /* bs bg color classes */
 .primary[class]:not(.outline) {background-color: var(--primary); }
-.secondary[class]:not(.outline,button,[type=submit],[type=button],[role=button]){background-color: var(--secondary); }
+.secondary[class]:not(.outline,button,[type=submit],[type=button],[role=button], a[href]){background-color: var(--secondary); }
 .danger[class]{ background-color: var(--danger); color: var(--white);}
 .warning[class]{ background-color: var(--warning); color: var(--black);}
 .success[class]{ background-color: var(--success); color: var(--white); }
 .info[class]{ background-color: var(--info); color: var(--black); }
 
+/* static relative colors */
+.pbs-bg{ background-color: var(--pico-background-color-static);}
+.pbs-fg{ background-color: var(--pico-color-static);}
+	
 
 /* bs text color classes */
 .text-primary[class]{ color: var(--primary); }
@@ -772,8 +776,169 @@ body:has(dialog[open]){
 	overflow: hidden;
 }
 
-
 }/* end utlities */
+
+
+/* derived color theming */
+
+/* light mode colors */
+[data-theme="light"],
+html:root:not([data-theme="dark"]) {
+	
+	--pbs: #5ea152;
+	--pbs-copy: var(--pbs);
+	background-color: var(--pico-background-color);
+	
+	&[data-pbs-theme-color] {
+		--pbs: attr(data-pbs-theme-color type(<color>), var(--pbs-copy));
+	}
+
+	--pbs-tone: oklch(from var(--pbs) 0.5 0.4 h);	
+	--pico-background-color: oklch(from var(--pbs) 0.92 calc(c * 0.33) h);
+	--pico-background-color-static: oklch(from var(--pbs) 0.92 calc(c * 0.33) h);
+	--pico-color: oklch(from var(--pbs) 0.12 calc(c * 0.1) h);
+	--pico-color-static: oklch(from var(--pbs) 0.12 calc(c * 0.1) h);
+	--pico-text-selection-color: oklch(from var(--pbs) 0.6 calc(c * 0.5) h);
+	--pico-muted-color: oklch(from var(--pico-color) calc(l * 1.25) c h);
+	--pico-muted-border-color: oklch(from var(--pbs) 0.75 calc(c * 0.5) h);
+	--pico-primary: oklch(from var(--pbs) 0.18 calc(c * 0.75) h);
+	--pico-primary-background: oklch(from var(--pbs) 0.68 calc(c * 0.85) h);
+	--pico-primary-border: oklch(from var(--pbs) 0.6 calc(c * 0.75) h);
+	--primary: var(--pico-primary-background);
+	--pico-primary-underline: oklch(from var(--pbs) 0.5 calc(c * 0.75) h / 0.5);
+	--pico-primary-hover: oklch(from var(--pbs) 0.2 calc(c * 0.25) h);
+	--pico-primary-hover-background: oklch(from var(--pbs) 0.58 calc(c * 0.85) h);
+	--pico-primary-focus: oklch(from var(--pbs) 0.48 calc(c * 0.8) h / 0.35);
+	--pico-primary-inverse: #000;
+	--pico-secondary: oklch(from var(--pbs) 0.18 calc(c * 0.85) calc(h - 60));
+	--pico-secondary-background: oklch(from var(--pbs) 0.5 calc(c * 0.3) calc(h - 30));
+	--pico-secondary-underline: oklch(from var(--pbs) 0.5 calc(c * 0.75) calc(h - 30) / 0.5);
+	--pico-secondary-hover: oklch(from var(--pbs) 0.2 calc(c * 0.25) calc(h - 30));
+	--pico-secondary-hover-background: oklch(from var(--pbs) 0.58 calc(c * 0.85) calc(h - 30));
+	--pico-secondary-focus: oklch(from var(--pbs) 0.48 calc(c * 0.8) calc(h - 30) / 0.35);
+	--pico-secondary-inverse: #000;
+	--xsecondary: var(--pico-secondary);
+	--pico-contrast: oklch(from var(--pbs) 0.1 calc(c * 0.3) h);
+	--pico-contrast-background: oklch(from var(--pbs) 0.05 calc(c * 0.25) h);
+	--pico-contrast-underline: oklch(from var(--pbs) 0.1 calc(c * 0.5) h / 0.5);
+	--pico-contrast-hover: oklch(from var(--pbs) 0.02 calc(c * 0.5) h);
+	--pico-contrast-hover-background: var(--pico-contrast-hover);
+	--pico-contrast-focus: oklch(from var(--pbs) 0.2 calc(c * 0.8) h / 0.4);
+	--pico-contrast-inverse: oklch(from var(--pbs) 0.95 calc(c * 0.5) h);
+	--pico-h1-color: oklch(from var(--pico-color) 0.05 calc(c * 0.15) h);
+	--pico-h2-color: oklch(from var(--pico-color) 0.10 calc(c * 0.15) h);
+	--pico-h3-color: oklch(from var(--pico-color) 0.15 calc(c * 0.15) h);
+	--pico-h4-color: oklch(from var(--pico-color) 0.25 calc(c * 0.15) h);
+	--pico-h5-color: oklch(from var(--pico-color) 0.35 calc(c * 0.15) h);
+	--pico-h6-color: oklch(from var(--pico-color) 0.45 calc(c * 0.15) h);
+	--pico-table-row-stripped-background-color: oklch(from var(--pico-background-color) calc(l * 0.9) calc(c * 0.85) h);
+	--pico-code-background-color:hsl(from var(--pbs-tone) h calc(s * 0.05) 95%);
+	--pico-code-color: hsl(from var(--pbs-tone) calc(h - 180) calc(s * 0.15) 5%);
+	--pico-form-element-background-color: oklch(from var(--pico-color) 0.75 calc(c * 1.5) h);
+	--pico-form-element-selected-background-color: oklch(from var(--pico-color) 0.7 calc(c * 0.5) h);
+	--pico-form-element-border-color: oklch(from var(--pico-color) 0.6 calc(c * 0.4) h);
+	--pico-form-element-color: var(--pico-color);
+	--pico-form-element-placeholder-color: oklch(from var(--pico-color) 0.35 c h);
+	--pico-form-element-active-background-color: oklch(from var(--pico-color) 0.75 calc(c * 0.4) h);
+	--pico-modal-overlay-background-color: rgba(255 255 255 / 0.75);
+	--pico-progress-background-color: hsl(from var(--pbs-tone) h calc(s * 0.25) 0.5);
+}
+
+
+/* dark mode colors */
+@media only screen and (prefers-color-scheme: dark) {
+  html:root:not([data-theme]) {
+  	--pbs: #5ea152;
+  	&[data-pbs-theme-color] {
+		--pbs: attr(data-pbs-theme-color type(<color>), var(--pbs-copy));
+	}
+     animation:  1ms paused pbsDarkRelativeColors;
+  }
+}
+
+/* Dark color scheme (Forced) */
+/* Enabled if forced with data-theme="dark" */
+html:root:has(input#pbsDarkMode:checked),
+[data-theme="dark"] {
+	--pbs: #5ea152;
+	&[data-pbs-theme-color] {
+		--pbs: attr(data-pbs-theme-color type(<color>), var(--pbs-copy));
+	}
+ 	 animation:  1ms paused pbsDarkRelativeColors;
+}
+
+
+
+/* define dark mode colors in keyframes so it can be mixed in twice w/o repeating */
+@keyframes pbsDarkRelativeColors {from{
+
+	/* base color */
+	--pbs-copy: var(--pbs);
+	background-color: var(--pico-background-color);
+	
+	--pbs-tone: oklch(from var(--pbs) 0.5 0.4 h);
+	--pico-background-color: oklch(from var(--pbs) 0.15 calc(c * 0.66) h);
+	--pico-background-color-static: oklch(from var(--pbs) 0.15 calc(c * 0.66) h);
+	--pico-color: oklch(from var(--pbs) 0.88 calc(c * 0.1) h);
+	--pico-color-static: oklch(from var(--pbs) 0.88 calc(c * 0.1) h);
+	--pico-text-selection-color:oklch(from var(--pbs) 0.4 calc(c * 0.5) h);
+	--pico-muted-color: oklch(from var(--pico-color) calc(l * 0.75) c h);
+	--pico-muted-border-color: oklch(from var(--pbs) 0.25 calc(c * 0.5) h);
+	--pico-primary: oklch(from var(--pbs) 0.82 calc(c * 0.75) h);
+	--pico-primary-background: oklch(from var(--pbs) 0.32 calc(c * 0.85) h);
+	--pico-primary-border: oklch(from var(--pbs) 0.4 calc(c * 0.75) h);
+	--primary: var(--pico-primary-background);
+	--pico-primary-underline: oklch(from var(--pbs) 0.5 calc(c * 0.75) h / 0.5);
+	--pico-primary-hover: oklch(from var(--pbs) 0.8 calc(c * 0.25) h);
+	--pico-primary-hover-background: oklch(from var(--pbs) 0.42 calc(c * 0.85) h);
+	--pico-primary-focus: oklch(from var(--pbs) 0.52 calc(c * 0.8) h / 0.35);
+	--pico-primary-inverse: #fff;
+	--pico-secondary: oklch(from var(--pbs) 0.82 calc(c * 0.85) calc(h - 60));
+	--pico-secondary-background: oklch(from var(--pbs) 0.5 calc(c * 0.3) calc(h - 30));
+	--pico-secondary-underline: oklch(from var(--pbs) 0.5 calc(c * 0.75) calc(h - 30) / 0.5);
+	--pico-secondary-hover: oklch(from var(--pbs) 0.8 calc(c * 0.25) calc(h - 30));
+	--pico-secondary-hover-background: oklch(from var(--pbs) 0.42 calc(c * 0.85) calc(h - 30));
+	--pico-secondary-focus: oklch(from var(--pbs) 0.52 calc(c * 0.8) calc(h - 30) / 0.35);
+	--pico-secondary-inverse: #fff;
+	--xsecondary: var(--pico-secondary);
+	--pico-contrast: oklch(from var(--pbs) 0.9 calc(c * 0.3) h);
+	--pico-contrast-background: oklch(from var(--pbs) 0.95 calc(c * 0.25) h);
+	--pico-contrast-underline: oklch(from var(--pbs) 0.9 calc(c * 0.5) h / 0.5);
+	--pico-contrast-hover: oklch(from var(--pbs) 0.98 calc(c * 0.5) h);
+	--pico-contrast-hover-background: var(--pico-contrast-hover);
+	--pico-contrast-focus: oklch(from var(--pbs) 0.8 calc(c * 0.8) h / 0.4);
+	--pico-contrast-inverse: oklch(from var(--pbs) 0.05 calc(c * 0.5) h);
+	--pico-h1-color: oklch(from var(--pico-color) 0.95 calc(c * 0.15) h);
+	--pico-h2-color: oklch(from var(--pico-color) 0.90 calc(c * 0.15) h);
+	--pico-h3-color: oklch(from var(--pico-color) 0.85 calc(c * 0.15) h);
+	--pico-h4-color: oklch(from var(--pico-color) 0.75 calc(c * 0.15) h);
+	--pico-h5-color: oklch(from var(--pico-color) 0.65 calc(c * 0.15) h);
+	--pico-h6-color: oklch(from var(--pico-color) 0.55 calc(c * 0.15) h);
+	--pico-table-row-stripped-background-color: oklch(from var(--pico-background-color) calc(l * 1.33) calc(c * 0.85) h);
+	--pico-code-background-color: hsl(from var(--pbs-tone) h calc(s * 0.5) calc(l * 0.5));
+	--pico-code-color: hsl(from var(--pbs-tone) calc(h-180) calc(s * 0.15) calc(l * 0.95));
+	--pico-form-element-background-color: oklch(from var(--pico-color) 0.25 calc(c * 1.5) h);
+	--pico-form-element-selected-background-color:oklch(from var(--pico-color) 0.3 calc(c * 0.5) h);
+	--pico-form-element-border-color: oklch(from var(--pico-color) 0.4 calc(c * 0.4) h);
+	--pico-form-element-color: var(--pico-color);
+	--pico-form-element-placeholder-color: oklch(from var(--pico-color) 0.65 c h);
+	--pico-form-element-active-background-color: oklch(from var(--pico-color) 0.25 calc(c * 0.4) h);
+	--pico-form-element-disabled-opacity: 0.5;
+	--pico-switch-background-color: var(--pico-text-selection-color);
+	--pico-switch-color:var(--pico-contrast-hover);
+	--pico-switch-thumb-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+	--pico-range-border-color: var(--pico-form-element-background-color);
+	--pico-range-active-border-color: var(--pico-form-element-border-color);
+	--pico-card-background-color: var(--pico-form-element-background-color);
+	--pico-card-sectioning-background-color: var(--pico-muted-border-color);
+	--pico-dropdown-background-color: var(--pico-muted-border-color);
+	--pico-dropdown-border-color: var(--pico-primary-background);
+	--pico-dropdown-hover-background-color:var(--pico-primary-hover-background);
+	--pico-modal-overlay-background-color: rgba(0 0 0 / 0.75);
+	--pico-progress-background-color: hsl(from var(--pbs-tone) h calc(s * 0.25) calc(l * 0.5));
+}} /* end dark mode derived color defs */
+
+
 
 @keyframes pbsMarqueeScroll {
   to { left: calc(var(--marquee-width) * -1); }
