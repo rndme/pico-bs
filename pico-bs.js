@@ -143,8 +143,11 @@ async function picobs(e){
 	augmentMarkup(sessionStorage.picobscache = parseCSS(css), sheet);
 	
 }//end picobs()
-
-document.addEventListener("DOMContentLoaded", picobs);
+if(document.readyState == "loading"){
+	document.addEventListener("DOMContentLoaded", picobs);
+}else{
+	setTimeout(picobs, 0);
+}
   
 window.picobs= picobs; // call this if/after you inject content that needs rescanned/hydrating/upgrading
   
