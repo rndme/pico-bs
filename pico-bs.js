@@ -1,22 +1,151 @@
-// pico-bs.js - pico.css upgrader, by dandavis. MIT applies.
-
+//////// pico-bs fallback JS (mainly for FF) ////////////////////////////////////
+///////// adds support for advance attr() usage, monitors data-pbs-theme-color, polyfills ::scroll-marker and sibling-index()
 (function(){
 
+function parseCSS(strCSS){
+   var rt = String(strCSS);
+		rt = rt.replace(/\/\*[\w\W]+?\*\//g, "");
+		rt = rt.replace(/[\r\n]{3,500}/g, "\n"); 
+		rt = rt.replace(/\s*\{\s*/g, "		{"); 
+		rt = rt.replace(/\s*\,\s*/g, ",");
+		rt = rt.replace(/\s*\}\s*/g, "}\n");
+		rt = rt.replace(/\s*\;\s{1,99}/g, ";"); 
+		rt = rt.replace(/\:\ +/g, ":");		
+	return rt.trim(); 
+}// end parseCSS()
 
-/*add missing pico things in js and css:
-X -text color classes
-x -badge
-x -pills
-X -alerts
-X -modal behavior 
-x -tabs
-x -listgroup
-x -chooser
-x -search/filter
-x -popovers
-x -validation
+function getAttrFixList(strCSS) {
+	return strCSS.split("\n").filter(x => x.match(/attr\([\w\W]+?\)[;}]/g)).map(function(a, i, r) {
+		var sel = a.split("\t")[0].trim();
+		return a.split(/[;}{]/).filter(Boolean).filter(x => /attr\(/.test(x)).map(function(rule, ruleIndex) {
+			var prop = rule.split(":")[0].trim();
+			var attr = rule.split(/attr\(\s*([\w\-]+)/)[1];
+			return {sel, prop, attr};
+		});
+	}).flat();
+}//end getAttrFixList()
 
-x support data-color on html to customize pico base color
-x [data-pbs-popover=targId], [data-pbs-filter-items], [data-pbs-filter-property], [data-pbs-value]
-*/
-}());
+
+function getScrollMarkerRules(strCSS){
+  return strCSS.split("\n").filter(x=>x.match(/::scroll-marker/g)).map(function(a,i,r){
+   var sel = a.split("\t")[0].trim(); 
+   var rule = a.split("\t")[2].trim();//.slice(1,-1).trim(); 
+   var newSel = sel.replaceAll(">*", "")
+     .replace(/::scroll/g, " .scroll")
+     .replace(".scroll-marker:target-current", ".target-current").replace(/\s+/g," ");
+  return newSel + rule;
+}).flat().join("\n");
+} // end getScrollMarkerRules()
+
+
+
+
+function augmentMarkup(strCSS, sheet){
+
+	// polyfill advance attr usages by setting relevant [style]s with compositied attr values:
+	if(!CSS.supports("column-gap: attr(x type(<length>))")){	
+	  getAttrFixList(strCSS).map(function(fix){	  
+	  	if(fix.attr=="data-pbs-duration") fix.suffix = "s";	  	  
+		try{
+			document.querySelectorAll(fix.sel+":not([style*='"+fix.prop+"'])").forEach( elm =>{
+				var oldStyle = elm.getAttribute("style") || "";			
+				var attrValue = elm.getAttribute(fix.attr) || "";
+				oldStyle+= ";"+ fix.prop +":"+ attrValue + (fix.suffix || "") +";";
+				elm.setAttribute("style", oldStyle);
+			});//end qsa forEach()
+		}catch(y){
+			// console.error(y, fix); // this finds only ::scroll-marker rules, which use simple attr
+		}//end try/catch
+	  });//end fixes map()
+	  
+	  
+		// watch for theme changes on body attrib
+	if(!document.body._pbs_watch){
+	  document.body._pbs_watch = true;
+	  new MutationObserver((mutations) => {
+		for (const mutation of mutations) { 
+		  if (mutation.attributeName === 'data-pbs-theme-color') {
+			  document.body.style.setProperty("--pbs", document.body.dataset.pbsThemeColor);
+		  }
+		}
+	  }).observe( document.body,  {
+		attributes: true, 
+		attributeFilter: ['data-pbs-theme-color'] 
+	  });
+	}//end if first time?
+
+
+	}//end if not advanced css5  attr support? 
+		
+	// rebuild css rules and generated content for browsers w/o ::scroll-marker support:
+	if(!CSS.supports("selector(::scroll-marker:target-current)")){
+	
+		// duplicate and re-interpret rules for ::scroll-marker with class-like replacements
+	  if(!document.querySelector("style[title='picobscompat']")){
+		var sheetBuffer =document.head.insertBefore(document.createElement("style"), sheet);
+		sheetBuffer.innerHTML = getScrollMarkerRules(strCSS);
+		sheetBuffer.title = "picobscompat";
+	  }
+	
+	// augment all chooser, tabbed, and carousel widgets with generated handles
+	// support buttons? maybe not yet, just do handles for now
+
+	  document.querySelectorAll(".chooser,.tabbed,.carousel").forEach(function(cont){
+	  	if(cont._picobs) return;
+	  	cont._picobs = true;
+		var kids = [...cont.children].flat();
+		var group = document.createElement(kids[0].tagName);
+		cont.appendChild(group); 
+		group.className="scroll-marker-group";
+		kids.forEach(function(kid, index){
+			var handle = document.createElement("span");
+			group.appendChild(handle);
+			handle.innerHTML = kid.getAttribute("name") || kid.getAttribute("data-name") || "0";
+			handle.className = "scroll-marker";
+			handle.onclick=function(e){ 
+				cont.querySelector(".target-current")?.classList.remove("target-current");
+				handle.classList.add("target-current");				
+				kid.scrollIntoView({container: "nearest", inline: "nearest", block:"nearest"});  
+			};
+		});// end kids forEach()
+	  });//end container forEach()
+	}//end if ::scroll-marker:target-current support?
+	
+	// fix marquee in ff:
+	if(!CSS.supports("z-index: sibling-index()")) document.querySelectorAll(".marquee>*")
+	.forEach(function(elm, index){
+		if(elm._picobs) return;
+	  	elm._picobs = true;
+		var kids = [...elm.parentNode.children].flat();
+		var count = kids.length;	
+		var oldStyle = elm.getAttribute("style") || "";			
+		var css = ` left: max(calc(var(--marquee-width) * ${count}), 100%);  animation-delay: calc( var(--marquee-duration) / ${count} * (${count} - ${index}) * -1);  `;
+	 	oldStyle+= ";"+css +";";
+		elm.setAttribute("style", oldStyle);
+	})//end marquee map()
+	
+	// bypass FF's input value peristence across reload behavior:
+	document.querySelectorAll(".alert input[type='checkbox']").forEach(check=> check.checked = check.defaultChecked);
+	
+	if(document.body.dataset.pbsThemeColor)	document.body.style.setProperty("--pbs", document.body.dataset.pbsThemeColor);
+	
+	
+
+	
+}//end augmentMarkup()
+
+
+async function picobs(e){
+
+	if( CSS.supports("z-index: sibling-index()") && CSS.supports("selector(::scroll-marker:target-current)") && CSS.supports("column-gap: attr(x type(<length>))") ) return;
+	var sheet = document.querySelector("link[href*='pico-bs']");
+	var css = sessionStorage.picobscache || await fetch( sheet.href ).then(c=>c.text());
+	augmentMarkup(sessionStorage.picobscache = parseCSS(css), sheet);
+	
+}//end picobs()
+
+document.addEventListener("DOMContentLoaded", picobs);
+  
+window.picobs= picobs; // call this if/after you inject content that needs rescanned/hydrating/upgrading
+  
+}());//end wrqapper
