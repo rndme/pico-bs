@@ -414,10 +414,11 @@ article+article { margin-bottom: 1px; }
   display: flex;
   gap: var(--pbs-carousel-item-gap);
   padding-left: 0;
-  overflow-x: auto;
+  overflow-x: hidden;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scroll-marker-group: after;
+  scroll-behavior: smooth;
   position: relative;
 }
 
