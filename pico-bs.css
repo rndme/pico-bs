@@ -414,12 +414,13 @@ article+article { margin-bottom: 1px; }
   display: flex;
   gap: var(--pbs-carousel-item-gap);
   padding-left: 0;
-  overflow-x: hidden;
+  overflow: hidden;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scroll-marker-group: after;
   scroll-behavior: smooth;
   position: relative;
+  width: var(--pbs-carousel-item-width);  
 }
 
 .carousel[data-pbs-width]{ 	--pbs-carousel-item-width: attr(data-pbs-width type(<length> | <percentage>) ); }
@@ -450,7 +451,8 @@ article+article { margin-bottom: 1px; }
   gap: 0.7em;
   place-content: center;
   margin-top: -0.5rem;
-  padding-bottom: 1rem;   
+  padding-bottom: 1rem; 
+  width: var(--pbs-carousel-item-width);  
 }
 .carousel:not(.buttons) ::scroll-marker:target-current,
 .carousel:not(.buttons) .target-current {
