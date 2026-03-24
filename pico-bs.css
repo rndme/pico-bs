@@ -413,7 +413,8 @@ article+article { margin-bottom: 1px; }
   --pbs-carousel-item-gap: 1rem;
   display: flex;
   gap: var(--pbs-carousel-item-gap);
-  padding-left: 0;
+  padding: 0;
+  margin: 0;
   overflow: hidden;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
@@ -459,11 +460,13 @@ article+article { margin-bottom: 1px; }
   background: var(--white);
 }
 /* button style */
-.carousel.buttons::scroll-button(*) {
+.carousel.buttons[class]::scroll-button(*) {
 	height: 1.5rem;
-	width: 33%;
+	width: 1.5rem;
 	font-size: 1.5rem;
+	margin-right: 0.5rem;
 }
+
 .carousel.buttons::scroll-button(*):disabled {
 	cursor: not-allowed;
 	opacity: 0.75;
@@ -471,11 +474,11 @@ article+article { margin-bottom: 1px; }
 
 .carousel.buttons::scroll-button(left) {
 	content: "<";
-	margin-right: 33%;
 }
 .carousel.buttons::scroll-button(right) {
 	content: ">";
 }
+
 
 /* marquee */
 .marquee {
