@@ -31,7 +31,7 @@ function getScrollMarkerRules(strCSS){
   return strCSS.split("\n").filter(x=>x.match(/::scroll-marker/g)).map(function(a,i,r){
    var sel = a.split("\t")[0].trim(); 
    var rule = a.split("\t")[2].trim();//.slice(1,-1).trim(); 
-   var newSel = sel.replaceAll(">*", "")
+   var newSel = sel.replaceAll(">*", "+ *>")
      .replace(/::scroll/g, " .scroll")
      .replace(".scroll-marker:target-current", ".target-current").replace(/\s+/g," ");
   return newSel + rule;
