@@ -510,7 +510,7 @@ article+article { margin-bottom: 1px; }
 		content: "<";
 	}
 	.scroll-marker-group {
-		.scroll-marker.target-current: first-child,
+		.scroll-marker.target-current:first-child,
 		.scroll-marker.target-current:last-child {
 			display: inline-block;
 			opacity: 0.5;
