@@ -33,7 +33,13 @@ function getScrollMarkerRules(strCSS){
    var rule = a.split("\t")[2].trim();//.slice(1,-1).trim(); 
    var newSel = sel.replaceAll(">*", "+ *>")
      .replace(/::scroll/g, " .scroll")
-     .replace(".scroll-marker:target-current", ".target-current").replace(/\s+/g," ");
+     .replace(".scroll-marker:target-current", " + * .target-current").replace(/\s+/g," ");
+	
+	if(sel.includes("+")) newSel = sel.split(/\s*,\s*/).filter(x=>x.includes("+")).join(", ").trim();
+	
+	if(sel.match("chooser")) console.info("SELREP:", sel, "||||",  newSel);
+	
+	
   return newSel + rule;
 }).flat().join("\n");
 } // end getScrollMarkerRules()
@@ -97,7 +103,7 @@ function augmentMarkup(strCSS, sheet){
 		var kids = [...cont.children].flat();
 		var tagName = kids[0].tagName.replace("IMG", "DIV");
 		var group = document.createElement("div");
-		
+		var isButtons = cont.classList.contains("buttons");
 		var wrap = document.createElement("div");
 		wrap.className="pbs_smg_wrap";
 		
@@ -110,19 +116,32 @@ function augmentMarkup(strCSS, sheet){
 		
 		var manualWidth = cont.style.getPropertyValue("--pbs-carousel-item-width");
 		if(manualWidth) group.style.setProperty("--pbs-carousel-item-width", manualWidth);
-		
-		
-		
+				
 		var handles = kids.map(function(kid, index){
 			var handle = document.createElement("span");
 			group.appendChild(handle);
+			handle.tabIndex = 0;
 			handle.innerHTML = kid.getAttribute("name") || kid.getAttribute("data-name") || " ";
 			handle.className = "scroll-marker";
-			handle.onclick=function(e){ 
-				wrap.querySelector(".target-current")?.classList.remove("target-current");
-				handle.classList.add("target-current");				
+			handle.onkeypress = handle.onclick= _actvte;
+			
+			function _actvte(e){
+				if(e.keyCode && !{10:1,13:1}[e.keyCode]) return;
+				
+				var old = wrap.querySelector(".target-current");
+				old?.classList.remove("target-current");
+				handle.classList.add("target-current");					
 				kid.scrollIntoView({container: "nearest", inline: "nearest", block:"nearest"});  
-			};
+				
+				if(isButtons){
+					var dir = old.compareDocumentPosition(handle);
+					setTimeout(x=>{
+						if( dir == 2 && handle.previousElementSibling) handle.previousElementSibling.focus();
+						if( dir == 4 && handle.nextElementSibling) handle.nextElementSibling.focus();
+					}, 10);					
+				}//end isButtons?
+			};//end _actvte()			
+			
 			return handle;
 		});// end kids forEach()
 		kids[0].scrollIntoView({container: "nearest", inline: "nearest", block:"nearest"});  
@@ -147,10 +166,7 @@ function augmentMarkup(strCSS, sheet){
 	document.querySelectorAll(".alert input[type='checkbox']").forEach(check=> check.checked = check.defaultChecked);
 	
 	if(document.body.dataset.pbsThemeColor)	document.body.style.setProperty("--pbs", document.body.dataset.pbsThemeColor);
-	
-	
-
-	
+		
 }//end augmentMarkup()
 
 
@@ -171,4 +187,3 @@ if(document.readyState == "loading"){
 window.picobs= picobs; // call this if/after you inject content that needs rescanned/hydrating/upgrading
   
 }());//end wrqapper
-
