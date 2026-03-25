@@ -467,6 +467,8 @@ article+article { margin-bottom: 1px; }
 	width: 1.5rem;
 	font-size: 1.5rem;
 	margin-right: 0.5rem;
+	background: var(--pico-primary-background);
+	color: var(--pico-primary);
 }
 
 .carousel.buttons::scroll-button(*):disabled {
@@ -483,6 +485,48 @@ article+article { margin-bottom: 1px; }
 .scroll-marker:focus-visible {
 	outline: 4px solid var(--pico-form-element-focus-color) !important;
 }
+
+/* polyfill button styles */
+.pbs_smg_wrap:has(.carousel.buttons) {
+	.scroll-marker-group .scroll-marker {
+		margin-right: 0.5rem;
+		cursor: pointer;
+		display: none;
+	}
+	& .scroll-marker-group .scroll-marker::before {
+		content: ">";
+		display: inline-block;
+		text-align: center;
+		font-weight: bold;
+		font-size: 1.5rem;
+		background: var(--pico-primary-background);
+		color: var(--pico-primary);
+		width: 1.65rem;
+		line-height: 0.7;
+		padding-bottom: 0.5rem;
+		border-radius: 3px;
+	}
+	& .scroll-marker-group .scroll-marker:first-child::before {
+		content: "<";
+	}
+	.scroll-marker-group {
+		.scroll-marker.target-current: first-child,
+		.scroll-marker.target-current:last-child {
+			display: inline-block;
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
+		.scroll-marker.target-current+.scroll-marker,
+		.scroll-marker:has(+ .scroll-marker.target-current) {
+			display: inline-block;
+		}
+		.scroll-marker:has(+ .scroll-marker.target-current):before {
+			content: "<";
+		}
+	}
+} /* end button polyfill styles */
+
+
 
 
 
