@@ -34,18 +34,10 @@ function getScrollMarkerRules(strCSS){
    var newSel = sel.replaceAll(">*", "+ *>")
      .replace(/::scroll/g, " .scroll")
      .replace(".scroll-marker:target-current", " + * .target-current").replace(/\s+/g," ");
-	
 	if(sel.includes("+")) newSel = sel.split(/\s*,\s*/).filter(x=>x.includes("+")).join(", ").trim();
-	
-	if(sel.match("chooser")) console.info("SELREP:", sel, "||||",  newSel);
-	
-	
   return newSel + rule;
 }).flat().join("\n");
 } // end getScrollMarkerRules()
-
-
-
 
 function augmentMarkup(strCSS, sheet){
 
