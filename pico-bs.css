@@ -438,27 +438,29 @@ article+article { margin-bottom: 1px; }
   text-align: center;
 }
 .carousel:not(.buttons) >*::scroll-marker,
-.carousel:not(.buttons) > .scroll-marker {
+.carousel:not(.buttons) + *>.scroll-marker {
   content: "";
-  border: 1px solid var(--gray);
+  border: 1px solid var(--pico-switch-background-color);
   height: 1.25em;
   width: 1.25em;
   border-radius: 1rem;
 }
 
 .carousel:not(.buttons)::scroll-marker-group,
-.carousel:not(.buttons) .scroll-marker-group {
+.carousel:not(.buttons) + .scroll-marker-group {
   display: flex;
   gap: 0.7em;
   place-content: center;
-  margin-top: -0.5rem;
+  margin-top: 0.25rem;
   padding-bottom: 1rem; 
   width: var(--pbs-carousel-item-width);  
 }
+
 .carousel:not(.buttons) ::scroll-marker:target-current,
-.carousel:not(.buttons) .target-current {
-  background: var(--white);
+.carousel:not(.buttons) + * .target-current {
+  background: var(--pico-switch-color);
 }
+
 /* button style */
 .carousel.buttons[class]::scroll-button(*) {
 	height: 1.5rem;
