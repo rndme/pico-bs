@@ -653,7 +653,7 @@ nav details.dropdown {
 
 
 .tabbed >*::scroll-marker,
-.tabbed + .scroll-marker {
+.tabbed + * .scroll-marker {
   content: attr(name);
   border-bottom: 4px solid var(--pico-muted-border-color);
   height: 2em;
@@ -663,6 +663,7 @@ nav details.dropdown {
   text-decoration: none;
   transition: 300ms border, 150ms font-weight, 200ms color;
   color: var(--pico-muted-color);
+  cursor: pointer;
 }
  .tabbed >*::scroll-marker[data-name],
  .chooser>*::scroll-marker[data-name],
@@ -672,14 +673,14 @@ nav details.dropdown {
  }
 .tabbed >*::scroll-marker:hover,
 .chooser>*::scroll-marker:hover,
-.tabbed  + * >.scroll-marker:hover,
-.chooser + * >.scroll-marker:hover {
+.tabbed  + * .scroll-marker:hover,
+.chooser + * .scroll-marker:hover {
 	color: var(--pico-secondary-hover);
 }
 .tabbed >*::scroll-marker:active,
 .chooser>*::scroll-marker:active,
-.tabbed  + * >.scroll-marker:active,
-.chooser + * >.scroll-marker:active {
+.tabbed  + * .scroll-marker:active,
+.chooser + * .scroll-marker:active {
 	color: var(--pico-secondary-inverse);
 }
 
@@ -714,7 +715,9 @@ nav details.dropdown {
 	margin: 0;
 }
 
-
+.pbs_smg_wrap:has(.tabbed) {
+	display: flex;
+}
 	
 
 
