@@ -653,7 +653,7 @@ nav details.dropdown {
 
 
 .tabbed >*::scroll-marker,
-.tabbed >.scroll-marker {
+.tabbed + .scroll-marker {
   content: attr(name);
   border-bottom: 4px solid var(--pico-muted-border-color);
   height: 2em;
@@ -666,25 +666,25 @@ nav details.dropdown {
 }
  .tabbed >*::scroll-marker[data-name],
  .chooser>*::scroll-marker[data-name],
- .tabbed >.scroll-marker[data-name],
- .chooser>.scroll-marker[data-name] { 
+ .tabbed  + * .scroll-marker[data-name],
+ .chooser + * .scroll-marker[data-name] { 
  	content: attr(data-name); 
  }
 .tabbed >*::scroll-marker:hover,
 .chooser>*::scroll-marker:hover,
-.tabbed >.scroll-marker:hover,
-.chooser>.scroll-marker:hover {
+.tabbed  + * >.scroll-marker:hover,
+.chooser + * >.scroll-marker:hover {
 	color: var(--pico-secondary-hover);
 }
 .tabbed >*::scroll-marker:active,
 .chooser>*::scroll-marker:active,
-.tabbed >.scroll-marker:active,
-.chooser>.scroll-marker:active {
+.tabbed  + * >.scroll-marker:active,
+.chooser + * >.scroll-marker:active {
 	color: var(--pico-secondary-inverse);
 }
 
 .tabbed::scroll-marker-group,
-.tabbed .scroll-marker-group {
+.tabbed + .scroll-marker-group {
   display: flex;
   gap: 0em;
   place-content: start;
@@ -692,7 +692,7 @@ nav details.dropdown {
 }
 
 .tabbed ::scroll-marker:target-current,
-.tabbed .target-current {
+.tabbed + * .target-current {
   color: var(--pico-color);
   border-radius: 0.15em;
   border-bottom: 4px solid var(--pico-primary-background);
@@ -700,12 +700,12 @@ nav details.dropdown {
 
 
 /* styles specific to ::scroll-marker polyfill */
-.tabbed:has(.scroll-marker-group){
+.tabbed:has( + .scroll-marker-group){
 	padding-top: 2.75rem;
 	anchor-name: --tabber;
 	anchor-scope: --tabber;
 }
-.tabbed .scroll-marker-group {
+.tabbed + .scroll-marker-group {
 	position: absolute;
 	position-anchor: --tabber;
 	left: anchor(left);
