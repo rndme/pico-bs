@@ -1,3 +1,4 @@
+
 //////// pico-bs fallback JS (mainly for FF) ////////////////////////////////////
 ///////// adds support for advance attr() usage, monitors data-pbs-theme-color, polyfills ::scroll-marker and sibling-index()
 (function(){
@@ -90,24 +91,42 @@ function augmentMarkup(strCSS, sheet){
 	// augment all chooser, tabbed, and carousel widgets with generated handles
 	// support buttons? maybe not yet, just do handles for now
 
-	  document.querySelectorAll(".chooser,.tabbed,.carousel").forEach(function(cont){
+	  document.querySelectorAll(".chooser,.tabbed,.carousel, .gallery").forEach(function(cont){
 	  	if(cont._picobs) return;
 	  	cont._picobs = true;
 		var kids = [...cont.children].flat();
-		var group = document.createElement(kids[0].tagName);
-		cont.appendChild(group); 
+		var tagName = kids[0].tagName.replace("IMG", "DIV");
+		var group = document.createElement("div");
+		
+		var wrap = document.createElement("div");
+		wrap.className="pbs_smg_wrap";
+		
+		cont.parentNode.insertBefore(wrap, cont);
+		wrap.appendChild(cont); 
+		wrap.appendChild(group); 
+		
+		//cont.appendChild(wrap); 
 		group.className="scroll-marker-group";
-		kids.forEach(function(kid, index){
+		
+		var manualWidth = cont.style.getPropertyValue("--pbs-carousel-item-width");
+		if(manualWidth) group.style.setProperty("--pbs-carousel-item-width", manualWidth);
+		
+		
+		
+		var handles = kids.map(function(kid, index){
 			var handle = document.createElement("span");
 			group.appendChild(handle);
-			handle.innerHTML = kid.getAttribute("name") || kid.getAttribute("data-name") || "0";
+			handle.innerHTML = kid.getAttribute("name") || kid.getAttribute("data-name") || " ";
 			handle.className = "scroll-marker";
 			handle.onclick=function(e){ 
-				cont.querySelector(".target-current")?.classList.remove("target-current");
+				wrap.querySelector(".target-current")?.classList.remove("target-current");
 				handle.classList.add("target-current");				
 				kid.scrollIntoView({container: "nearest", inline: "nearest", block:"nearest"});  
 			};
+			return handle;
 		});// end kids forEach()
+		kids[0].scrollIntoView({container: "nearest", inline: "nearest", block:"nearest"});  
+		handles[0].classList.add("target-current");		
 	  });//end container forEach()
 	}//end if ::scroll-marker:target-current support?
 	
@@ -152,3 +171,4 @@ if(document.readyState == "loading"){
 window.picobs= picobs; // call this if/after you inject content that needs rescanned/hydrating/upgrading
   
 }());//end wrqapper
+
