@@ -767,6 +767,7 @@ nav details.dropdown {
   width: var(--pbs-chooser-menu-width);
   transition: 300ms border, 150ms font-weight, 200ms color;
   color: var(--pico-muted-color);  
+  cursor: pointer;
 }
 
  
@@ -778,28 +779,18 @@ nav details.dropdown {
 
 
 /* styles specific to ::scroll-marker polyfill */
-
-/*
-.chooser:has(.scroll-marker-group){
-	xmargin-left: var(--pbs-chooser-menu-width);
-	anchor-name: --choosey;
-	anchor-scope: --choosey;
-	position: unset;
-	left: 0;
+.pbs_smg_wrap:has(.chooser) {
+	display: flex;
+	flex-direction: column;
+	padding-bottom: 1rem;
 }
-.chooser:has(.scroll-marker-group) > * {
-	padding-left: var(--pbs-chooser-menu-width);
-}
-.chooser .scroll-marker-group {
+.chooser + .scroll-marker-group {
 	position: absolute;
-	position-anchor: --choosey;
-	left: anchor(left);
-	top: calc(anchor(top));
-	padding: 0 !important;
-	margin: 0;
+}
+.chooser + .scroll-marker-group .scroll-marker {
+	padding-right: 1rem; 
 }
 
-*/
 
 
 /* various enhancments */
