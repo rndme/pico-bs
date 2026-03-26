@@ -901,11 +901,6 @@ body details[open] summary {
 
 
 /* message feature */
-@keyframes pbs-blur {
-  0%, 96% { visibility: visible;}
-  97%, 99% {visibility: hidden;}
-  100% { visibility: visible;}
-}
 body {
   --pbs-msg: "";
   --pbs-msg-duration: 99s;
@@ -1135,8 +1130,27 @@ html:root:has(input#pbsDarkMode:checked),
 	--pico-progress-background-color: hsl(from var(--pbs-tone) h calc(s * 0.25) calc(l * 0.5));
 }} /* end dark mode derived color defs */
 
+/* utility keyframes */
 
-
+/* blur (as in un-focus) focused inputs */
+@keyframes pbs-blur {
+  0%, 96% { visibility: visible;}
+  97%, 99% {visibility: hidden;}
+  100% { visibility: visible;}
+}
+/* fades out, then display:none; */
+@keyframes pbsFadeToNone {
+  0% {opacity: 1; display: inherit;}
+  99% {opacity: 0;}
+  100% {display: none;}
+}
+/* slides out, then display:none; */
+@keyframes pbsSlideToNone {
+  0% {transform: translateX(0px); display: inherit;}
+  99% {transform: translateX(120vw);}
+  100% {display: none;}
+}
+/* animates marquees */
 @keyframes pbsMarqueeScroll {
   to { left: calc(var(--marquee-width) * -1); }
 }
