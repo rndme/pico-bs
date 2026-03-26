@@ -321,11 +321,15 @@ article+article { margin-bottom: 1px; }
 .alert:has(input[type='checkbox']:not(:checked)):not(.fade,.slide) {
 	display: none;
 }
-.alert:has(input[type='checkbox']:not(:checked)).fade {
-  	animation: pbsFadeToNone 0.5s forwards;
+.alert:has(input[type='checkbox']:not(:checked)).slide {
+	transition-behavior: allow-discrete;
+	animation: pbsFadeToNone 0.85s forwards;
+	animation-fill-mode: forwards;
 }
 .alert:has(input[type='checkbox']:not(:checked)).slide {
-  	animation: pbsSlideToNone 0.85s forwards;
+	transition-behavior: allow-discrete;
+	animation: pbsSlideToNone 0.85s forwards;
+	animation-fill-mode: forwards;
 }
 
 
@@ -1217,16 +1221,18 @@ html:root:has(input#pbsDarkMode:checked),
 }
 /* fades out, then display:none; */
 @keyframes pbsFadeToNone {
-  0% {opacity: 1; display: inherit;}
-  99% {opacity: 0;}
-  100% {display: none;}
+	0% {opacity: 1; display: inherit;position: inherit;z-index: 0;}
+	99% {opacity: 0;display: inherit;position: inherit;z-index: 0;}
+	100% {opacity: 0; display: none; z-index: -1; position: absolute;}
 }
 /* slides out, then display:none; */
-@keyframes pbsSlideToNone {
-  0% {transform: translateX(0px); display: inherit;}
-  99% {transform: translateX(120vw);}
-  100% {display: none;}
+@keyframes pbsSlideToNone3 {
+  0% {transform: translateX(0px); display: inherit;position: inherit;z-index: 0;}
+  99% {transform: translateX(120vw);display: inherit;position: inherit;z-index: 0;}
+  100% {display: none; transform: translateX(121vw); z-index: -1; position: absolute;}
 }
+
+
 /* animates marquees */
 @keyframes pbsMarqueeScroll {
   to { left: calc(var(--marquee-width) * -1); }
