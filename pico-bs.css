@@ -493,6 +493,70 @@ article+article { margin-bottom: 1px; }
 	outline: 4px solid var(--pico-form-element-focus-color) !important;
 }
 
+/* show number on items via data-pbs-number util attrib */
+.carousel[data-pbs-number] > * { position: relative; }
+.carousel[data-pbs-number] > *:after {
+	content:"" counter(pbs-num) "/" var(--pbs-count) "";
+	position: absolute;
+	top: 0rem;
+	left: 1.5rem;
+	font-weight: bold;
+	font-size: 1.5rem;
+	text-shadow: 0 0 1px #000, 0 0 3px #000, 0 0 8px #000;
+	color: #ccc;
+}
+
+/* auto advance. aka "slideshow" */
+.carousel[data-pbs-advance] { /* configuration */
+	--advancePeriod:  attr(data-pbs-advance s);
+	--advanceCount:  calc(sibling-count() - 0);
+	position: relative;
+}
+/* where we're going, you won't need controls: */
+.carousel[data-pbs-advance]::scroll-marker-group { 
+	display: none !important; 
+}
+/* adjust count for the spurious pauser checkbox if eneded */
+.carousel[data-pbs-advance]:has([data-pbs-carousel-click-pauser]){
+	--advanceCount:  calc(sibling-count() - 1);
+}
+/* use discrete animation steps to pull the left side lefter, advancing the items */
+.carousel[data-pbs-advance] > :first-child {
+	animation: pbs-carousel-advancer calc(var(--advancePeriod) * var(--advanceCount))  infinite;
+	animation-timing-function: steps(calc(var(--advanceCount) + 0), end);
+}
+/* any checkbox[data-pbs-pause] in same parent container as carousel can toggle play/pause: */
+:has(>.carousel[data-pbs-advance]):has( [data-pbs-pause]:checked ) .carousel  > :first-child {
+	animation-play-state: paused;
+}
+/* magic pauser checkbox action */
+.carousel[data-pbs-advance]:has([data-pbs-carousel-click-pauser]:checked) > :first-child{
+	animation-play-state: paused;
+}
+/* as a child of .carousel, thithe magic checkbox invisibly covers the whole thing and catches clicks */
+[data-pbs-carousel-click-pauser] {
+	width: 100%;
+	height: 100%;
+	position: absolute !important;
+	opacity: 0.005;
+	left: 0;
+}
+/* show paused via after content */
+.carousel[data-pbs-advance]:has([data-pbs-carousel-click-pauser]):after {
+	content: "❚❚";
+	position: absolute;
+	right: 1.5rem;
+	top: 0.25rem;
+	font-size: 2.5rem;
+	text-shadow: 0 0 1px #000, 0 0 3px #000, 0 0 8px #000;
+	opacity: 0;
+	color: #ccc;
+	transition: opacity 500ms;
+}
+.carousel[data-pbs-advance]:has([data-pbs-carousel-click-pauser]:checked):after {
+	opacity: 1;
+}
+
 /* polyfill button styles */
 .pbs_smg_wrap:has(.carousel.buttons) {
 	.scroll-marker-group .scroll-marker {
@@ -1166,5 +1230,10 @@ html:root:has(input#pbsDarkMode:checked),
 /* animates marquees */
 @keyframes pbsMarqueeScroll {
   to { left: calc(var(--marquee-width) * -1); }
+}
+/* animates auto-advance carousels */
+@keyframes pbs-carousel-advancer {
+   0 {  margin-left: 0; }
+  to {  margin-left: calc( -100% *  var(--advanceCount) - 1rem *  var(--advanceCount) );  }
 }
 
