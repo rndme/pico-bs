@@ -872,7 +872,8 @@ body details {
 	border: 1px solid #888;
 	border-bottom: 0px solid #888;
 	border-color: var(--pico-form-element-border-color);
-	background: hsl(from var(--pico-form-element-background-color) h calc(s * 0.5) 90%);
+	background: var(--pico-form-element-background-color);
+	color: var(--pico-form-element-color);
 }
 body details[open],
 body details:last-of-type {
