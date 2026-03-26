@@ -318,7 +318,7 @@ article+article { margin-bottom: 1px; }
 .alert input:checked:active:after {
 	opacity: 0.3;
 }
-.alert:has(input[type='checkbox']:not(:checked,.fade,.slide)) {
+.alert:has(input[type='checkbox']:not(:checked)):not(.fade,.slide) {
 	display: none;
 }
 .alert:has(input[type='checkbox']:not(:checked)).fade {
