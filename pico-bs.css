@@ -321,6 +321,13 @@ article+article { margin-bottom: 1px; }
 .alert:has(input[type='checkbox']:not(:checked)) {
 	display: none;
 }
+.alert:has(input[type='checkbox']:not(:checked)).fade {
+  	animation: pbsFadeToNone 0.5s forwards;
+}
+.alert:has(input[type='checkbox']:not(:checked)).slide {
+  	animation: pbsSlideToNone 0.85s forwards;
+}
+
 
 /* support popovers */
 [data-pbs-popto]{  
