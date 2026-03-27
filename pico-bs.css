@@ -964,6 +964,7 @@ body details[open] summary {
 
 
 /* message feature */
+--pbs-show: 0;
 body {
   --pbs-msg: "";
   --pbs-msg-duration: 99s;
@@ -972,32 +973,77 @@ body {
 [data-pbs-msg]:focus {
 	animation: var(--pbs-msg-duration) pbs-blur;
 }
-html:root>body:after {
-	--pbs-msg-icon: if(style(--pbs-msg-error: 0): "ℹ️️ 𝗡𝗼𝘁𝗶𝗰𝗲"; else: "⚠︎ 𝗘𝗿𝗿𝗼𝗿";);
+#pbsNotify,
+body:not(:has(#pbsNotify))::after {
+	--msg-border-rad: 0.5rem;
+	--bgcolor:  var(--pico-background-color-static);
+	--bgcolor2: oklch(from var(--bgcolor) calc(l * 1.2) calc(c * 1.2) calc(h*1.4));
+	color: var(--pico-color-static); 
+	
 	display: block;
-	white-space: pre-wrap;
-	color: var(--pico-background-color-static);
 	position: fixed;
+	z-index: 9999999;
 	bottom: 2rem;
-	right: if(style(--pbs-msg: ""): -25rem; else: 2.5rem;);
-	opacity: if(style(--pbs-msg: ""): 1; else: 0;);
-	transition: if(style(--pbs-msg: ""): 0ms; else: 500ms;) right, 
-				300ms if(style(--pbs-msg: ""): 0ms; else: var(--pbs-msg-duration);) opacity;
 	width: 15rem;
-	--bgcolor: if(style(--pbs-msg-error: 0): var(--pico-color-static); else: #e89494;);
-	--bgcolor2: oklch(from var(--bgcolor) calc(l * 1.1) calc(c * 1.2) calc(h*1.4));
-	border: 2px solid #222;
+	border: 2px solid #444;
 	box-shadow: 6px 8px 12px #222;
-	padding: 0.25rem 0.15rem 0.75rem 0.5rem;
+	
 	font-size: 1.1rem;
-	content: var(--pbs-msg-icon) " \A ﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌\A " var(--pbs-msg);
-	line-height: 1.1;
 	cursor: pointer;
-	border-radius: 0.5rem;
+	border-radius: var(--msg-border-rad);
 	background-size: 100% 100%;
 	background-position: 0px 0px;
 	background-image: linear-gradient(70deg, var(--bgcolor2) 0%, var(--bgcolor) 100%);
+	line-height: 1.1;	
+	right: 2.5em;
+	right: calc( var(--pbs-show) * 25rem - 22.5rem );
+	opacity: var(--pbs-show);
+	transition:   500ms right,  500ms opacity;	
+
 }
+/* if user-added fancy div, decorate and rig that */
+#pbsNotify {
+   .btn { font-size: 0.75rem; margin: 0.2rem 0.4rem 0 0; }
+   .msg {
+	  white-space: pre-wrap;
+	  padding: 0.35rem 0.15rem 0.75rem 0.75rem;
+  }
+   .msg:after {
+	  content: var(--pbs-msg);
+  }
+   .title {
+	  font-size: 1.25rem;
+	  padding: 0.2rem 0 0.25rem 0.15rem; 
+	  display: block;
+	  border-top-left-radius: var(--msg-border-rad);
+	  border-top-right-radius: var(--msg-border-rad);
+	  background: oklch(from var(--bgcolor) calc(l * 0.85) calc(c * 1) calc(h*1));
+	  border-bottom: 1px solid #8888;
+	  box-shadow: 0 0 0 calc(10rem * var(--pbs-msg-error)) #8106 inset;
+  }
+   .title .warn {
+	  position: absolute;
+	  color: var(--danger);
+	  z-index: calc( var(--pbs-msg-error) - 1 );
+  }
+   .title .note {
+	  position: absolute;
+	  opacity: calc( var(--pbs-msg-error) * -1 + 1 );
+  }
+}/* end #pbsNotify */
+/* if no fancy div on page, use generated content */
+body:not(:has(#pbsNotify))::after {
+	white-space: pre-wrap;
+	padding: 0.25rem 0.15rem 0.75rem 0.5rem;
+	content: var(--pbs-msg-icon) " \A ﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌\A " var(--pbs-msg);
+	box-shadow: 6px 8px 12px #222, 0 0 0 calc(10rem * var(--pbs-msg-error)) #8106 inset !important;
+	--pbs-msg-icon: "ℹ️️ 𝗡𝗼𝘁𝗶𝗰𝗲";	
+}
+@supports (width: if(media(any-pointer: fine): 0; else: 1px)) {
+  body::after { /* customize icon by error/info, not avail for firefox */
+	  --pbs-msg-icon: if(style(--pbs-msg-error: 0): "ℹ️️ 𝗡𝗼𝘁𝗶𝗰𝗲"; else: "⚠️ 𝗘𝗿𝗿𝗼𝗿";) !important;
+  }
+}/* end if if() support */
 
 
 
