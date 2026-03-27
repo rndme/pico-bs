@@ -236,7 +236,7 @@ async function picobs(e){
 	delete sessionStorage.picobscache;
 	var sheet = document.querySelector("link[href*='pico-bs']");
 	var css = sessionStorage.picobscache || await fetch( sheet.href ).then(c=>c.text());
-	css+= "\n\n" + pag.textContent;
+	
 	augmentMarkup(sessionStorage.picobscache = parseCSS(css), sheet);
 	
 }//end picobs()
