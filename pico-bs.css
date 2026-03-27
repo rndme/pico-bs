@@ -517,7 +517,8 @@ article+article { margin-bottom: 1px; }
 	position: relative;
 }
 /* where we're going, you won't need controls: */
-.carousel[data-pbs-advance]::scroll-marker-group { 
+.carousel[data-pbs-advance]::scroll-marker-group,
+.carousel[data-pbs-advance] + * .scroll-marker-group{ 
 	display: none !important; 
 }
 /* adjust count for the spurious pauser checkbox if eneded */
@@ -525,7 +526,7 @@ article+article { margin-bottom: 1px; }
 	--advanceCount:  calc(sibling-count() - 1);
 }
 /* use discrete animation steps to pull the left side lefter, advancing the items */
-.carousel[data-pbs-advance] > :first-child {
+.carousel[data-pbs-advance]:not(+ .scroll-marker-group) > :first-child {
 	animation: pbs-carousel-advancer calc(var(--advancePeriod) * var(--advanceCount))  infinite;
 	animation-timing-function: steps(calc(var(--advanceCount) + 0), end);
 }
