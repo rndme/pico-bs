@@ -344,31 +344,7 @@ article+article { margin-bottom: 1px; }
 
 
 
-/* tabs */
-.tabs {
-	display: inline-block;
 
-	nav [for], .nav [for] { cursor: pointer; }
-
-	section { display: none; }
-
-	section[id].open, /* << js version selector.
-				VVV	 js-less ONLY version selector VVV */
-	&:not(:has(nav [for], .nav [for])) section[id]:target { 
-		display: block; 
-	}
-}/* end tabs */
-
- /* create choosers via wrapping <aside> around the nav/.nav in a .tab component */
-.tabs:has(aside) {	
-	position: relative;
-	border: 1px solid;
-	padding: 1em;
-	
-	aside,	main {	float: left;}
-	aside {	width: 10%;}
-	main {	width: 90%;}
-} /* end chooser */
 
 
 /* grid updates */
@@ -757,8 +733,14 @@ nav details.dropdown {
 	gap: attr(data-pbs-gap type(<length>));
 }
 
+/* make active pico elms look better in light/dark modes */
+article.active, .list-group .active {
+	background-color: var(--pico-color);
+	color: var(--pico-background-color);
+}
 
-/* add tabbed and chooser classes. webkit only for now, but no js, clean look and feel */
+
+/* add tabbed and chooser classes. clean look and feel */
 
 .tabbed {
   display: flex;
