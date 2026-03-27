@@ -526,7 +526,7 @@ article+article { margin-bottom: 1px; }
 	--advanceCount:  calc(sibling-count() - 1);
 }
 /* use discrete animation steps to pull the left side lefter, advancing the items */
-.carousel[data-pbs-advance]:not(+ .scroll-marker-group) > :first-child {
+.carousel[data-pbs-advance]:not( & + .scroll-marker-group) > *:first-child  {
 	animation: pbs-carousel-advancer calc(var(--advancePeriod) * var(--advanceCount))  infinite;
 	animation-timing-function: steps(calc(var(--advanceCount) + 0), end);
 }
