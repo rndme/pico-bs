@@ -547,7 +547,8 @@ article+article { margin-bottom: 1px; }
 	left: 0;
 }
 /* show paused via after content */
-.carousel[data-pbs-advance]:has([data-pbs-carousel-click-pauser]):after {
+
+ .carousel[data-pbs-advance]:has([data-pbs-carousel-click-pauser])>*::before {
 	content: "❚❚";
 	position: absolute;
 	right: 1.5rem;
@@ -558,11 +559,14 @@ article+article { margin-bottom: 1px; }
 	color: #ccc;
 	transition: opacity 500ms;
 }
-.carousel[data-pbs-advance]:has([data-pbs-carousel-click-pauser]:checked):after {
+ .carousel[data-pbs-advance]:has([data-pbs-carousel-click-pauser]:checked)>*::before {
 	opacity: 1;
 }
 
-/* polyfill button styles */
+/* polyfill / button styles */
+.pbs_smg_wrap .carousel[data-pbs-advance] >*:first-child {
+	animation: none !important;
+}
 .pbs_smg_wrap:has(.carousel.buttons) {
 	.scroll-marker-group .scroll-marker {
 		margin-right: 0.5rem;
