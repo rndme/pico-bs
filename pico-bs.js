@@ -34,10 +34,35 @@ function getScrollMarkerRules(strCSS){
    var newSel = sel.replaceAll(">*", "+ *>")
      .replace(/::scroll/g, " .scroll")
      .replace(".scroll-marker:target-current", " + * .target-current").replace(/\s+/g," ");
+		
+	
 	if(sel.includes("+")) newSel = sel.split(/\s*,\s*/).filter(x=>x.includes("+")).join(", ").trim();
+	
+	if(sel.includes("[data-pbs-paginat")){
+		
+	  if(sel.includes(":not(:nth-child")){
+		  let inds = [...new Set( sel.match(/\d+/g) )];
+		  var buf = inds.map(n=>
+			  `[data-pbs-paginate="${n}"] + .scroll-marker-group .scroll-marker:not(:nth-child(${n}n+1))`
+		  );
+		  newSel = buf.join(",\n");
+	  }
+
+	  if(sel.includes("]>:nth-last")){
+		  let inds = [...new Set( sel.match(/\d+/g) )];
+		  var buf = inds.map(n=>
+			  `[data-pbs-paginate='${n}'] + * .scroll-marker:nth-last-child(${n}):before`
+		  );
+		  newSel = buf.join(",\n");		
+	  }
+	}//end paginate rules over-rides
+	
   return newSel + rule;
 }).flat().join("\n");
 } // end getScrollMarkerRules()
+
+
+
 
 function augmentMarkup(strCSS, sheet){
 
@@ -87,9 +112,7 @@ function augmentMarkup(strCSS, sheet){
 	  }
 	
 	// augment all chooser, tabbed, and carousel widgets with generated handles
-	// support buttons? maybe not yet, just do handles for now
-
-	  document.querySelectorAll(".chooser,.tabbed,.carousel, .gallery").forEach(function(cont){
+	  document.querySelectorAll(".chooser,.tabbed,.carousel, [data-pbs-paginate], .gallery").forEach(function(cont){
 	  	if(cont._picobs) return;
 	  	cont._picobs = true;
 		var kids = [...cont.children].flat();
@@ -102,6 +125,7 @@ function augmentMarkup(strCSS, sheet){
 		cont.parentNode.insertBefore(wrap, cont);
 		wrap.appendChild(cont); 
 		wrap.appendChild(group); 
+		// if(cont.dataset.pbsPaginate)  // would like to change insert order, but that will break selectors
 		
 		//cont.appendChild(wrap); 
 		group.className="scroll-marker-group";
@@ -125,7 +149,7 @@ function augmentMarkup(strCSS, sheet){
 				handle.classList.add("target-current");					
 				kid.scrollIntoView({container: "nearest", inline: "nearest", block:"nearest"});  
 				
-				if(isButtons){
+				if(isButtons){ 
 					var dir = old.compareDocumentPosition(handle);
 					setTimeout(x=>{
 						if( dir == 2 && handle.previousElementSibling) handle.previousElementSibling.focus();
@@ -139,34 +163,80 @@ function augmentMarkup(strCSS, sheet){
 		kids[0].scrollIntoView({container: "nearest", inline: "nearest", block:"nearest"});  
 		handles[0].classList.add("target-current");		
 	  });//end container forEach()
+	  
+	   document.querySelectorAll(".carousel[data-pbs-advance]").forEach(function(cont){
+	   		var period = cont.dataset.pbsAdvance * 1000;
+			var roof = cont.parentElement;
+			var handles = [...roof.querySelectorAll(".scroll-marker")];
+			var pauser = roof.querySelector("[data-pbs-carousel-click-pauser]");
+			if(pauser) handles.pop().remove();
+			//console.info({cont, period, roof, handles, pauser});
+			setInterval(function _adv(){
+				if(pauser && pauser.checked) return;
+				var cur = 	roof.querySelector(".scroll-marker.target-current");
+				var nxt = cur.nextElementSibling || handles[0];
+				//console.info({cur, nxt, handles});
+				nxt.click();				
+			}, period);
+	   });
+	  
+	  
 	}//end if ::scroll-marker:target-current support?
 	
 	// fix marquee in ff:
-	if(!CSS.supports("z-index: sibling-index()")) document.querySelectorAll(".marquee>*")
-	.forEach(function(elm, index){
-		if(elm._picobs) return;
-	  	elm._picobs = true;
-		var kids = [...elm.parentNode.children].flat();
-		var count = kids.length;	
-		var oldStyle = elm.getAttribute("style") || "";			
-		var css = ` left: max(calc(var(--marquee-width) * ${count}), 100%);  animation-delay: calc( var(--marquee-duration) / ${count} * (${count} - ${index}) * -1);  `;
-	 	oldStyle+= ";"+css +";";
-		elm.setAttribute("style", oldStyle);
-	})//end marquee map()
+	if(!CSS.supports("z-index: sibling-index()")){
+	
+	  document.querySelectorAll(".marquee>*").forEach(function(elm, index){
+		  if(elm._picobs) return;
+		  elm._picobs = true;
+		  var kids = [...elm.parentNode.children].flat();
+		  var count = kids.length;	
+		  var oldStyle = elm.getAttribute("style") || "";			
+		  var css = ` left: max(calc(var(--marquee-width) * ${count}), 100%);  animation-delay: calc( var(--marquee-duration) / ${count} * (${count} - ${index}) * -1);  `;
+		  oldStyle+= ";"+css +";";
+		  elm.setAttribute("style", oldStyle);
+	  })//end marquee map()
+
+ document.querySelectorAll(".carousel[data-pbs-advance]>*").forEach(function(elm, index){
+		  if(elm._picobs) return;
+		  elm._picobs = true;
+		  var kids = [...elm.parentNode.children].flat();
+		  var count = kids.length;	
+		  var oldStyle = elm.getAttribute("style") || "";			
+		  var css = ``;
+		  oldStyle+= ";"+css +";";
+		  elm.setAttribute("style", oldStyle);
+	  })//end marquee map()
+	  
+	  
+ 	document.querySelectorAll(".carousel[data-pbs-advance]").forEach(function(cont, index){
+ 		 var oldStyle = cont.getAttribute("style") || "";
+		 var n = cont.children.length;
+		 if(cont.querySelector("[data-pbs-carousel-click-pauser]")) n--;
+		 var css = `--advanceCount: ${n}`;
+		  oldStyle+= ";"+css +";";
+		  oldStyle = oldStyle.replace(/advancePeriod\:\d+;/,"advancePeriod:"+cont.dataset.pbsAdvance+"s;");
+		  cont.setAttribute("style", oldStyle);
+ 	});
+ 
+	
+	}//end sibling-index?
 	
 	// bypass FF's input value peristence across reload behavior:
 	document.querySelectorAll(".alert input[type='checkbox']").forEach(check=> check.checked = check.defaultChecked);
 	
 	if(document.body.dataset.pbsThemeColor)	document.body.style.setProperty("--pbs", document.body.dataset.pbsThemeColor);
-		
+	
 }//end augmentMarkup()
 
 
 async function picobs(e){
 
 	if( CSS.supports("z-index: sibling-index()") && CSS.supports("selector(::scroll-marker:target-current)") && CSS.supports("column-gap: attr(x type(<length>))") ) return;
+	delete sessionStorage.picobscache;
 	var sheet = document.querySelector("link[href*='pico-bs']");
 	var css = sessionStorage.picobscache || await fetch( sheet.href ).then(c=>c.text());
+	css+= "\n\n" + pag.textContent;
 	augmentMarkup(sessionStorage.picobscache = parseCSS(css), sheet);
 	
 }//end picobs()
@@ -179,3 +249,4 @@ if(document.readyState == "loading"){
 window.picobs= picobs; // call this if/after you inject content that needs rescanned/hydrating/upgrading
   
 }());//end wrqapper
+
