@@ -518,7 +518,7 @@ article+article { margin-bottom: 1px; }
 }
 /* where we're going, you won't need controls: */
 .carousel[data-pbs-advance]::scroll-marker-group,
-.carousel[data-pbs-advance] + * .scroll-marker-group{ 
+.carousel[data-pbs-advance] + .scroll-marker-group{ 
 	display: none !important; 
 }
 /* adjust count for the spurious pauser checkbox if eneded */
@@ -540,7 +540,7 @@ article+article { margin-bottom: 1px; }
 }
 /* as a child of .carousel, thithe magic checkbox invisibly covers the whole thing and catches clicks */
 [data-pbs-carousel-click-pauser] {
-	width: 100%;
+	width: 10000vw;
 	height: 100%;
 	position: absolute !important;
 	opacity: 0.005;
